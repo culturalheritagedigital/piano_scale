@@ -16,3 +16,8 @@ st.title('Piano Scale Calculation')
 kammerton = st.number_input("Insert concert pitch", value=440.0)
 st.write("The current concert pitch is ", kammerton, " Hz.")
 
+key = st.selectbox(
+    "Select a key:",
+    ("Email", "Home phone", "Mobile phone"))
+
+st.write("You selected:", key)
