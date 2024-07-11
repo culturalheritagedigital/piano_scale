@@ -61,7 +61,7 @@ st.title('Piano Scale Calculation')
 # dataframe = np.random.randn(30, 30)
 # st.dataframe(dataframe)
 
-kammerton = st.number_input("Insert concert pitch:", value=440.0)
+kammerton = st.number_input("Insert concert pitch:", value=440, step=1)
 st.write("The current concert pitch is ", kammerton, " Hz.")
 
 def f(key):
@@ -73,7 +73,7 @@ key = st.selectbox(
 
 key_num = note_names.index(key)+1
 
-st.write("You selected:", key, "with a frequency of", f(key_num), "Hz in Equal temperament.")
+st.write("The current key is ", key, " with a fundamental frequency of", f(key_num), "Hz in Equal temperament.")
 
 st.subheader("Ideal String")
 
