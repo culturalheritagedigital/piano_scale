@@ -89,4 +89,4 @@ four = np.abs(np.fft.fft(signal[0:48000]))
 four = four/np.max(four)
 fourlog = 20*np.log10(four/np.max(four))
 
-st.line_chart(fourlog[0:int(f(key_num)*(n+2))], x="Frequency [Hz]", y="Amplitude [dB]")
+st.line_chart(fourlog[0:int(f(key_num)*(n+2))], x_label="Frequency [Hz]", y_label="Amplitude [dB]")
