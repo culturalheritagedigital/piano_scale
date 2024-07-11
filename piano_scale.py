@@ -77,7 +77,10 @@ st.write("You selected:", key, "with a frequency of", f(key_num), "Hz in Equal t
 
 st.subheader("Ideal String")
 
-n = st.number_input("Insert number of harmonics:", value=20)
+
+
+n = st.number_input("Insert number of harmonics:", value=20, min_value=1, max_value=int(20000/f(key_num))
+
 frequencies1 = [f(key_num) * k for k in np.arange(1,n+1,1)]  # Frequencies in Hz
 amplitudes = [0-k for k in np.arange(1,n+1,1)]  # Amplitudes in dB
 damping_factors = 0.3*np.arange(n+1)**1  # Damping factors in dB/sec
