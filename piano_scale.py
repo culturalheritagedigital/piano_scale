@@ -75,7 +75,7 @@ key_num = note_names.index(key)+1
 
 st.write("You selected:", key, "with a frequency of", f(key_num), "Hz in Equal temperament.")
 
-st.subheader("Ideal String")
+st.subheader("Ideal String ", st.latex(a+b=c) )
 
 
 
