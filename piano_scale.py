@@ -16,7 +16,7 @@ note_names = ('A0', 'A♯0', 'B0', 'C1', 'C♯1', 'D1', 'D♯1', 'E1', 'F1', 'F�
 def generate_wav_file(frequencies, amplitudes_db, damping_factors):
     duration = 3  # Duration of the sound in seconds
 
-    hamm = np.hamming(48000)
+    hamm = np.hamming(48000)[24000:48000]
     ones = np.ones(int(48000*2.5))
     fadeout = np.append(ones, hamm)
 
