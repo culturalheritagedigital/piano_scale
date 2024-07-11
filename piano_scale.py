@@ -75,9 +75,13 @@ key_num = note_names.index(key)+1
 
 st.write("You selected:", key, "with a frequency of", f(key_num), "Hz in Equal temperament.")
 
-st.subheader("Ideal String ", st.latex(a+b=c) )
+st.subheader("Ideal String")
 
-
+st.latex(r'''
+    a + ar + a r^2 + a r^3 + \cdots + a r^{n-1} =
+    \sum_{k=0}^{n-1} ar^k =
+    a \left(\frac{1-r^{n}}{1-r}\right)
+    ''')
 
 n = st.number_input("Insert number of harmonics:", value=20, min_value=1)
 
