@@ -87,4 +87,4 @@ four = np.abs(np.fft.fft(signal[0:48000]))
 four = four/np.max(four)
 fourlog = 20*np.log10(four/np.max(four))
 
-st.line_chart(fourlog[0:f(key_num)*(n+2)])
+st.line_chart(fourlog[0:int(f(key_num)*(n+2))])
