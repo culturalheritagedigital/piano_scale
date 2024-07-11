@@ -75,6 +75,8 @@ key_num = note_names.index(key)+1
 
 st.write("You selected:", key, "with a frequency of", f(key_num), "Hz.")
 
+st.subheader("Ideal String")
+
 n = st.number_input("Insert number of harmonics:", value=10)
 frequencies1 = [f(key_num) * k for k in np.arange(1,n+1,1)]  # Frequencies in Hz
 amplitudes = [0-k for k in np.arange(1,n+1,1)]  # Amplitudes in dB
@@ -87,4 +89,4 @@ four = np.abs(np.fft.fft(signal[0:48000]))
 four = four/np.max(four)
 fourlog = 20*np.log10(four/np.max(four))
 
-st.line_chart(fourlog[0:int(f(key_num)*(n+2))])
+st.line_chart(fourlog[0:int(f(key_num)*(n+2))], x="Frequency [Hz]", y="Amplitude [dB]")
