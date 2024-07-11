@@ -79,7 +79,7 @@ st.subheader("Ideal String")
 
 
 
-n = st.number_input("Insert number of harmonics:", value=20, min_value=1, max_value=int(20000/f(key_num))
+n = st.number_input("Insert number of harmonics:", value=20, min_value=1, max_value=int(20000/f(key_num)))
 
 frequencies1 = [f(key_num) * k for k in np.arange(1,n+1,1)]  # Frequencies in Hz
 amplitudes = [0-k for k in np.arange(1,n+1,1)]  # Amplitudes in dB
