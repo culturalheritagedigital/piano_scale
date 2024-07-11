@@ -82,3 +82,9 @@ damping_factors = 0.3*np.arange(n+1)**1  # Damping factors in dB/sec
 signal = generate_wav_file(frequencies1, amplitudes, damping_factors)
 
 st.audio(signal, format="audio/mpeg", sample_rate=48000)
+
+four = np.abs(np.fft.fft(signal[0:48000]))
+four = four/np.max(four)
+fourlog = 20*np.log10(four/np.max(four))
+
+st.line_chart(fourlog[0:24000])
