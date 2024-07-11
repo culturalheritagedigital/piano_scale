@@ -51,7 +51,7 @@ def generate_wav_file(frequencies, amplitudes_db, damping_factors):
 
     # Convert the signal to the appropriate data type for WAV files (-32767 to 32767 for int16)
     signal = (32767 * signal).astype(np.int16)
-
+    signal = signal[0:48000*3]
     signal = signal * fadeout
 
     return signal
