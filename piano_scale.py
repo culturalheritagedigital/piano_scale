@@ -15,6 +15,11 @@ note_names = ('A0', 'A♯0', 'B0', 'C1', 'C♯1', 'D1', 'D♯1', 'E1', 'F1', 'F�
 
 def generate_wav_file(frequencies, amplitudes_db, damping_factors):
     duration = 3  # Duration of the sound in seconds
+
+    hamm = np.hamming(48000)
+    ones = np.ones(int(48000*2.5))
+    fadeout = np.append(ones, hamm)
+
     sample_rate = 48000  # Sample rate in Hz
 
     num_samples = int(duration * sample_rate)
@@ -46,6 +51,8 @@ def generate_wav_file(frequencies, amplitudes_db, damping_factors):
 
     # Convert the signal to the appropriate data type for WAV files (-32767 to 32767 for int16)
     signal = (32767 * signal).astype(np.int16)
+
+    signal = signal * fadeout
 
     return signal
 
