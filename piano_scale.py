@@ -82,7 +82,7 @@ st.latex(r''' f_n = n \cdot f_1 ''')
 n = st.number_input("Insert number of harmonics:", value=20, min_value=1)
 
 
-damping_factor = st.slider("Select a damping factor:", 0, 1, 0.1)
+damping_factor = st.slider("Select a damping factor:", min_value=0, max_value=1, value=.3, step=.1)
 #st.write("I'm ", age, "years old")
 
 frequencies1 = [f(key_num) * k for k in np.arange(1,n+1,1)]  # Frequencies in Hz
