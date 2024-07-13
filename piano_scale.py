@@ -94,7 +94,7 @@ damping_factor = st.slider("Select a damping factor:", min_value=0.0, max_value=
 
 frequencies1 = [f(key_num) * k for k in np.arange(1,n+1,1)]  # Frequencies in Hz
 amplitudes = [0-k for k in np.arange(1,n+1,1)]  # Amplitudes in dB
-damping_factors = damping_factor*np.arange(n+1)**1  # Damping factors in dB/sec
+damping_factors = damping_factor*np.arange(n+1)**2  # Damping factors in dB/sec
 signal = generate_wav_file(frequencies1, amplitudes, damping_factors)
 
 st.audio(signal, format="audio/mpeg", sample_rate=48000)
