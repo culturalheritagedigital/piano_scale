@@ -135,7 +135,7 @@ st.header("Taylor String Parameters")
 
 st.latex(r''' f_n = \frac{1}{l \cdot d} \cdot \sqrt{\frac{F}{\pi \cdot \rho}}  ''')
 
-l = st.number_input("Insert string length [mm]:", value=402, min_value=40, max_value=2500, step=0.01)
+l = st.number_input("Insert string length [mm]:", value=402.00, min_value=40.00, max_value=2500.00, step=0.01)
 
 d = st.selectbox(
     "Select a string diameter [mm]:",
