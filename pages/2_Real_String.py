@@ -110,6 +110,26 @@ st.write("The current key is ", key, " with a fundamental frequency of", f(key_n
 
 #st.subheader("Ideal String")
 
+st.header("Inharmonicity Calculation")
+
+l = st.number_input("Insert string length [mm]:", value=402.00, min_value=40.00, max_value=2500.00, step=0.01)
+
+d = st.selectbox(
+    "Select a string diameter [mm]:",
+    string_diameters, index=11)
+
+st.write("Attention: For the inharmonicity calculation, the fundamental frequency of the string without stiffness would be needed, which is unknown. Therefore, the fundamental frequency of the real string is used instead. This introduces an error in the inharmonicity calculation.")
+
+def delta_inharmonicity(d, f, l): # d and l in mm
+    return 3.4 * 10**15 * d**2 / (f**2 * l**4)
+
+
+
+
+
+
+
+
 
 
 n = st.number_input("Insert number of harmonics:", value=20, min_value=1)
