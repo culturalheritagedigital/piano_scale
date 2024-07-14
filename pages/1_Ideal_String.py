@@ -147,7 +147,7 @@ d = st.selectbox(
     "Select a string diameter [mm]:",
     string_diameters, index=11)
 
-st.header("String Diameters, Tensile Strengths and Load Capacities")
+st.header("Tensile Strengths and Load Capacities")
 
 def taylor_string_load(f, l, d, rho):
     return (np.pi * rho * (f * l * d)**2)
