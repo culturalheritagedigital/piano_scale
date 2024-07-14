@@ -144,3 +144,11 @@ d = st.selectbox(
     "Select a string diameter [mm]:",
     string_diameters, index=11)
 
+def taylor_string_load(f, l, d, rho):
+    return (np.pi * rho * (f * l * d)**2)
+
+actual_load = taylor_string_load(f(key_num), l/1000, d/1000, rho)
+
+percentage_of_max_load = np.round(actual_load / load_capacity(d/1000, tensile_strengths[string_diameters.index(d)], safety_factor=0.75) * 100, 2)
+
+st.write("The actual load is ", actual_load, "N, which is ", percentage_of_max_load, "% of the maximum load capacity of the string.")
