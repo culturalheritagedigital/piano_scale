@@ -81,15 +81,16 @@ def generate_wav_file(frequencies, amplitudes_db, damping_factors):
 
 st.title('Ideal Stretched String')
 
-st.markdown(
-"""
-- An ideal string has no stiffness and has uniform linear density throughout.
-- The restoring force for transverse vibrations is provided solely by the tension in the string.
-- The partials follow a harmonic series:
-"""
-)
+with st.expander("Click to read more:"):
+    st.markdown(
+    """
+    - An ideal string has no stiffness and has uniform linear density throughout.
+    - The restoring force for transverse vibrations is provided solely by the tension in the string.
+    - The partials follow a harmonic series:
+    """
+    )
 
-st.latex(r''' f_n = n \cdot f_1 ''')
+    st.latex(r''' f_n = n \cdot f_1 ''')
 #st.checkbox('Check me out')
 
 # st.write('Here\'s our first attempt at using data to create a table:')
