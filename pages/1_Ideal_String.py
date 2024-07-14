@@ -29,8 +29,8 @@ string_load_capacities = np.round([load_capacity(d, ts) for d, ts in zip(string_
 
 rho = 7850  # Density of steel in kg/m^3
 
-# Youngs modulus of steel in N/cm^2
-E = 215000  # N/cm^2
+# Youngs modulus of steel in N/mm^2
+E = 215000  # N/mm^2
 
 
 
@@ -170,7 +170,7 @@ st.dataframe(df)
 st.header("String Stretching")
 
 def string_stretching(load, l, d, E):
-    return (load * l) / (d**2 * np.pi/4 * E* 10**6)
+    return (load * (l/1000)) / ((d/1000)**2 * (np.pi/4) * E)
 
 actual_string_stretching = np.round(string_stretching(actual_load, l, d, E),4)
 
