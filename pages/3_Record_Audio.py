@@ -1,6 +1,8 @@
 import streamlit as st
 import numpy as np
 import pandas as pd
+import io
+from scipy.io.wavfile import read
 
 from scipy.io import wavfile
 
@@ -129,7 +131,11 @@ audio = mic_recorder(
 if audio:
     st.audio(audio['bytes'])
 
+data = read(io.BytesIO(audio['bytes']))
+
 st.write(audio)
+
+st.write(data)
 
 #st.line_chart(audio, x_label="Amplitude", y_label="Sample")
 

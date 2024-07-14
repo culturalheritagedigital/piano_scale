@@ -2,3 +2,4 @@ numpy
 librosa
 pandas
 streamlit_mic_recorder
+io
