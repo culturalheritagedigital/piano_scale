@@ -183,6 +183,8 @@ actual_string_stretching_percent = np.round(actual_string_stretching/l*100,2)
 
 df = pd.DataFrame({"Concert Pitch [Hz]": kammerton, "f_1": [f(key_num)], "String Length [mm]": l, "String Diameter [mm]": d, "Inharmonicity [cent]": actual_delta_inharmonicity, "Inharmonicity Coefficient B": actual_B_inharmonicity })    
 
+st.dataframe(df)
+
 # st.header("Taylor String Parameters")
 
 # st.latex(r''' f_n = \frac{1}{l \cdot d} \cdot \sqrt{\frac{F}{\pi \cdot \rho}}  ''')
