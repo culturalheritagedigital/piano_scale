@@ -1,7 +1,6 @@
 import streamlit as st
 import numpy as np
 import pandas as pd
-import io
 from scipy.io.wavfile import read
 
 from scipy.io import wavfile
