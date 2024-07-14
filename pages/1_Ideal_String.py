@@ -169,9 +169,9 @@ st.dataframe(df)
 
 st.header("String Stretching")
 
-def string_stretching(f, l, rho, E):
-    return (f**2 * l**3 * 4 * rho) / (E * 10**6)
+def string_stretching(load, l, d, E):
+    return (load * l) / (d**2 * np.pi()/4 * E* 10**6)
 
-actual_string_stretching = np.round(string_stretching(f(key_num), l/1000, rho, E),4)
+actual_string_stretching = np.round(string_stretching(actual_load, l, d, E),4)
 
 st.write("The actual string stretching is ", actual_string_stretching, "mm.")
