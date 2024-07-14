@@ -139,5 +139,5 @@ l = st.number_input("Insert string length [mm]:", value=402.00, min_value=40.00,
 
 d = st.selectbox(
     "Select a string diameter [mm]:",
-    string_diameters)
+    string_diameters, index=11)
 
