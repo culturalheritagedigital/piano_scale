@@ -29,6 +29,9 @@ string_load_capacities = np.round([load_capacity(d, ts) for d, ts in zip(string_
 
 rho = 7850  # Density of steel in kg/m^3
 
+# Youngs modulus of steel in N/cm^2
+E = 215000  # N/cm^2
+
 
 
 def generate_wav_file(frequencies, amplitudes_db, damping_factors):
@@ -160,14 +163,15 @@ percentage_of_max_load = np.round(actual_load/max_load*100,2)
 st.write("The actual load is ", actual_load, "N, which is ", percentage_of_max_load, "% of the maximum load capacity (", max_load, " N, including a safety factor of 0.75).")
 
 
-
-def string_stretching(f, l, rho, E):
-    return (f**2 * l**3 * 4 * rho) / (E * 10**6)
-
-
-
 df = pd.DataFrame({"Diameter (mm)": string_diameters, "Tensile strength (N/mm^2)": tensile_strengths, "Max load capacity (*0.75) (N)": string_load_capacities})
 
 st.dataframe(df)
 
 st.header("String Stretching")
+
+def string_stretching(f, l, rho, E):
+    return (f**2 * l**3 * 4 * rho) / (E * 10**6)
+
+actual_string_stretching = np.round(string_stretching(f(key_num), l/1000, rho, E),2)
+
+st.write("The actual string stretching is ", actual_string_stretching, "mm.")
