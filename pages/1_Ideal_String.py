@@ -176,4 +176,4 @@ actual_string_stretching = np.round(string_stretching(actual_load, l, d, E),4)
 
 actual_string_stretching_percent = np.round(actual_string_stretching/l*100,2)
 
-st.write("The actual string stretching is ", actual_string_stretching, "mm / ", actual_string_stretching_percent,  "%.")
+st.write("The actual string stretching is ", actual_string_stretching, "mm or ", actual_string_stretching_percent,  "%.")
