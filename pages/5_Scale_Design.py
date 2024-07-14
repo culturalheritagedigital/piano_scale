@@ -1,5 +1,6 @@
 import streamlit as st
 import numpy as np
+import pandas as pd
 
 from scipy.io import wavfile
 
@@ -59,6 +60,19 @@ def generate_wav_file(frequencies, amplitudes_db, damping_factors):
 
 
 st.title('Piano Scale Design')
+
+df = pd.DataFrame({"Key number": np.arange(1,89,1),
+                "Key": note_names ,
+                   "f_1 [Hz]": np.random.randint(1,1000,88) 
+                   "Length [mm]": np.random.randint(1,1000,88), 
+                   "Diameter [mm]": np.random.randint(1,1000,88), 
+                   "delta [cent]": np.random.randint(1,1000,88), 
+                   "B": np.random.randint(1,1000,88), 
+                   "Load [N]": np.random.randint(1,1000,88), 
+                   "Max Load Capacity [N]": np.random.randint(1,1000,88), 
+                   "Percentage of Max Load Capacity [%]": np.random.randint(1,1000,88), 
+                   "String Stretching [mm]": np.random.randint(1,1000,88), 
+                   "String Stretching [%]": np.random.randint(1,1000,88)})
 
 #st.write('This tool is supposed to help you calculate the parameters of a piano string scale.')
 
