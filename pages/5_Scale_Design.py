@@ -74,6 +74,8 @@ df = pd.DataFrame({"Key number": np.arange(1,89,1),
                    "String Stretching [mm]": np.random.randint(1,1000,88), 
                    "String Stretching [%]": np.random.randint(1,1000,88)})
 
+st.dataframe(df)
+
 #st.write('This tool is supposed to help you calculate the parameters of a piano string scale.')
 
 #st.checkbox('Check me out')
