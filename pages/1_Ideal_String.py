@@ -172,6 +172,6 @@ st.header("String Stretching")
 def string_stretching(f, l, rho, E):
     return (f**2 * l**3 * 4 * rho) / (E * 10**6)
 
-actual_string_stretching = np.round(string_stretching(f(key_num), l/1000, rho, E),2)
+actual_string_stretching = np.round(string_stretching(f(key_num), l/1000, rho, E),4)
 
 st.write("The actual string stretching is ", actual_string_stretching, "mm.")
