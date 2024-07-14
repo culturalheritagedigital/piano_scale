@@ -123,8 +123,10 @@ st.write("Attention: For the inharmonicity calculation, the fundamental frequenc
 def delta_inharmonicity(d, f, l): # d and l in mm
     return 3.4 * 10**15 * d**2 / (f**2 * l**4)
 
+actual_delta_inharmonicity = np.round(delta_inharmonicity(d, f(key_num), l),5)
 
-
+st.write("The inharmonicity of the string is $\delta = $", actual_delta_inharmonicity , "cent .")
+ 
 
 
 
