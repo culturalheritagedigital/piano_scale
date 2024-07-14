@@ -81,9 +81,11 @@ st.markdown(
 """
 - An ideal string has no stiffness and has uniform linear density throughout.
 - The restoring force for transverse vibrations is provided solely by the tension in the string.
-- Item 3
+- The partials follow a harmonic series:
 """
 )
+
+st.latex(r''' f_n = n \cdot f_1 ''')
 #st.checkbox('Check me out')
 
 # st.write('Here\'s our first attempt at using data to create a table:')
@@ -104,9 +106,9 @@ key_num = note_names.index(key)+1
 
 st.write("The current key is ", key, " with a fundamental frequency of", f(key_num), "Hz in Equal temperament.")
 
-st.subheader("Ideal String")
+#st.subheader("Ideal String")
 
-st.latex(r''' f_n = n \cdot f_1 ''')
+
 
 n = st.number_input("Insert number of harmonics:", value=20, min_value=1)
 
