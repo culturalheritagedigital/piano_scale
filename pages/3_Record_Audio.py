@@ -129,7 +129,9 @@ audio = mic_recorder(
 if audio:
     st.audio(audio['bytes'])
 
-st.line_chart(audio, x_label="Amplitude", y_label="Sample")
+st.write(audio)
+
+#st.line_chart(audio, x_label="Amplitude", y_label="Sample")
 
 # st.header("Inharmonicity Calculation")
 
