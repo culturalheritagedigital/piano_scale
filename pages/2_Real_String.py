@@ -1,5 +1,6 @@
 import streamlit as st
 import numpy as np
+import pandas as pd
 
 from scipy.io import wavfile
 
@@ -12,6 +13,26 @@ note_names = ('A0', 'A♯0', 'B0', 'C1', 'C♯1', 'D1', 'D♯1', 'E1', 'F1', 'F�
        'A5', 'A♯5', 'B5', 'C6', 'C♯6', 'D6', 'D♯6', 'E6', 'F6', 'F♯6',
        'G6', 'G♯6', 'A6', 'A♯6', 'B6', 'C7', 'C♯7', 'D7', 'D♯7', 'E7',
        'F7', 'F♯7', 'G7', 'G♯7', 'A7', 'A♯7', 'B7', 'C8')
+
+# String diameters of steel strings in mm
+string_diameters = [0.700, 0.725, 0.750, 0.775, 0.800, 0.825, 0.850, 0.875, 0.900, 0.925, 0.950, 0.975, 1.000, 1.025, 1.050, 1.075, 1.100, 1.125, 1.150, 1.175, 1.200, 1.225, 1.250, 1.300, 1.350, 1.400, 1.450, 1.500, 1.550, 1.600]
+
+# Tensile strengths of steel in N/mm^2
+tensile_strengths = [2480.00, 2470.00, 2440.00, 2420.00, 2400.00, 2380.00, 2360.00, 2350.00, 2340.00, 2320.00, 2310.00, 2290.00, 2280.00, 2260.00, 2240.00, 2220.00, 2220.00, 2200.00, 2200.00, 2180.00, 2180.00, 2160.00, 2160.00, 2110.00, 2110.00, 2060.00, 2060.00, 2000.00, 2000.00, 1980.00,]
+
+# calculate the load capacity in N:
+def load_capacity(diameter, tensile_strength, safety_factor=0.75):
+    return np.pi * (diameter/2)**2 * tensile_strength * safety_factor
+
+# String load capacity in N (including a safety factor of 0.75)
+string_load_capacities = np.round([load_capacity(d, ts) for d, ts in zip(string_diameters, tensile_strengths)],2)
+
+rho = 7850  # Density of steel in kg/m^3
+
+# Youngs modulus of steel in N/mm^2
+E = 215000  # N/mm^2
+
+
 
 def generate_wav_file(frequencies, amplitudes_db, damping_factors):
     duration = 3  # Duration of the sound in seconds
@@ -58,10 +79,17 @@ def generate_wav_file(frequencies, amplitudes_db, damping_factors):
 
 
 
-st.title('Piano Scale Calculation')
+st.title('Real Stretched String')
 
-#st.write('This tool is supposed to help you calculate the parameters of a piano string scale.')
+st.markdown(
+"""
+- A real string has a bending stiffness.
+- The restoring force for transverse vibrations is composed by the tension in the string and an additional wave length dependend part (dispersion).
+- The partials do not follow a straight harmonic series:
+"""
+)
 
+st.latex(r''' f_n > n \cdot F_0 ''')
 #st.checkbox('Check me out')
 
 # st.write('Here\'s our first attempt at using data to create a table:')
@@ -82,9 +110,9 @@ key_num = note_names.index(key)+1
 
 st.write("The current key is ", key, " with a fundamental frequency of", f(key_num), "Hz in Equal temperament.")
 
-st.subheader("Ideal String")
+#st.subheader("Ideal String")
 
-st.latex(r''' f_n = n \cdot f_1 ''')
+
 
 n = st.number_input("Insert number of harmonics:", value=20, min_value=1)
 
@@ -109,3 +137,43 @@ else:
     st.line_chart(fourlog[0:int(f(key_num)*(n+2))], x_label="Frequency [Hz]", y_label="Amplitude [dB]")
     
 
+st.header("Taylor String Parameters")
+
+st.latex(r''' f_n = \frac{1}{l \cdot d} \cdot \sqrt{\frac{F}{\pi \cdot \rho}}  ''')
+
+st.write("with l = string length [m], d = string diameter [m], F = string load [N], ρ = density of steel [kg/m^3], n = harmonic number")
+
+
+l = st.number_input("Insert string length [mm]:", value=402.00, min_value=40.00, max_value=2500.00, step=0.01)
+
+d = st.selectbox(
+    "Select a string diameter [mm]:",
+    string_diameters, index=11)
+
+st.header("Tensile Strengths and Load Capacities")
+
+def taylor_string_load(f, l, d, rho):
+    return (np.pi * rho * (f * l * d)**2)
+
+actual_load = np.round(taylor_string_load(f(key_num), l/1000, d/1000, rho),2)
+max_load = string_load_capacities[string_diameters.index(d)]
+
+percentage_of_max_load = np.round(actual_load/max_load*100,2)
+
+st.write("The actual load is ", actual_load, "N, which is ", percentage_of_max_load, "% of the maximum load capacity (", max_load, " N, including a safety factor of 0.75).")
+
+
+# df = pd.DataFrame({"Diameter (mm)": string_diameters, "Tensile strength (N/mm^2)": tensile_strengths, "Max load capacity (*0.75) (N)": string_load_capacities})
+
+# st.dataframe(df)
+
+st.header("String Stretching")
+
+def string_stretching(load, l, d, E):
+    return (load * l) / (d**2 * (np.pi/4) * E)
+
+actual_string_stretching = np.round(string_stretching(actual_load, l, d, E),4)
+
+actual_string_stretching_percent = np.round(actual_string_stretching/l*100,2)
+
+st.write("The actual string stretching is ", actual_string_stretching, "mm or ", actual_string_stretching_percent,  "%.")
