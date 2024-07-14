@@ -13,10 +13,6 @@ note_names = ('A0', 'A♯0', 'B0', 'C1', 'C♯1', 'D1', 'D♯1', 'E1', 'F1', 'F�
        'G6', 'G♯6', 'A6', 'A♯6', 'B6', 'C7', 'C♯7', 'D7', 'D♯7', 'E7',
        'F7', 'F♯7', 'G7', 'G♯7', 'A7', 'A♯7', 'B7', 'C8')
 
-
-
-
-
 st.title('Sonare')
 
 #st.header('Making piano string parameters audible')
@@ -71,4 +67,4 @@ st.header('This tool is supposed to help you understand the influence of piano s
 # else:
 #     st.line_chart(fourlog[0:int(f(key_num)*(n+2))], x_label="Frequency [Hz]", y_label="Amplitude [dB]")
     
-
+st.footer('Sonare © 2024 by Niko Plath is licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International')
