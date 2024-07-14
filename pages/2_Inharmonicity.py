@@ -165,6 +165,24 @@ else:
     st.line_chart(fourlog[0:int(f(key_num)*(n+2))], x_label="Frequency [Hz]", y_label="Amplitude [dB]")
     
 
+def taylor_string_load(f, l, d, rho):
+    return (np.pi * rho * (f * l * d)**2)
+
+actual_load = np.round(taylor_string_load(f(key_num), l/1000, d/1000, rho),2)
+max_load = string_load_capacities[string_diameters.index(d)]
+
+percentage_of_max_load = np.round(actual_load/max_load*100,2)
+
+def string_stretching(load, l, d, E):
+    return (load * l) / (d**2 * (np.pi/4) * E)
+
+actual_string_stretching = np.round(string_stretching(actual_load, l, d, E),4)
+
+actual_string_stretching_percent = np.round(actual_string_stretching/l*100,2)
+
+
+df = pd.DataFrame({"Concert Pitch [Hz]": kammerton, "f_1": [f(key_num)], "String Length [mm]": l, "String Diameter [mm]": d, "Inharmonicity [cent]": actual_delta_inharmonicity, "Inharmonicity Coefficient B": actual_B_inharmonicity })    
+
 # st.header("Taylor String Parameters")
 
 # st.latex(r''' f_n = \frac{1}{l \cdot d} \cdot \sqrt{\frac{F}{\pi \cdot \rho}}  ''')
@@ -180,13 +198,7 @@ else:
 
 # st.header("Tensile Strengths and Load Capacities")
 
-# def taylor_string_load(f, l, d, rho):
-#     return (np.pi * rho * (f * l * d)**2)
 
-# actual_load = np.round(taylor_string_load(f(key_num), l/1000, d/1000, rho),2)
-# max_load = string_load_capacities[string_diameters.index(d)]
-
-# percentage_of_max_load = np.round(actual_load/max_load*100,2)
 
 # st.write("The actual load is ", actual_load, "N, which is ", percentage_of_max_load, "% of the maximum load capacity (", max_load, " N, including a safety factor of 0.75).")
 
@@ -197,11 +209,6 @@ else:
 
 # st.header("String Stretching")
 
-# def string_stretching(load, l, d, E):
-#     return (load * l) / (d**2 * (np.pi/4) * E)
 
-# actual_string_stretching = np.round(string_stretching(actual_load, l, d, E),4)
-
-# actual_string_stretching_percent = np.round(actual_string_stretching/l*100,2)
 
 # st.write("The actual string stretching is ", actual_string_stretching, "mm or ", actual_string_stretching_percent,  "%.")
