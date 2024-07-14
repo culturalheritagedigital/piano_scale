@@ -1,5 +1,6 @@
 import streamlit as st
 import numpy as np
+import pandas as pd
 
 from scipy.io import wavfile
 
@@ -154,7 +155,7 @@ max_load = string_load_capacities[string_diameters.index(d)]
 
 percentage_of_max_load = np.round(actual_load/max_load*100,2)
 
-st.write("The actual load is ", actual_load, "N, which is ", percentage_of_max_load, "% of the maximum load capacity (", max_load, " N including a safety factor of 0.75) of the string.")
+st.write("The actual load is ", actual_load, "N, which is ", percentage_of_max_load, "% of the maximum load capacity (", max_load, " N, including a safety factor of 0.75).")
 
 
 df = pd.DataFrame({"Diameter (mm)": string_diameters, "Tensile strength (N/mm^2)": tensile_strengths, "Load capacity (N)": string_load_capacities})
