@@ -72,3 +72,5 @@ st.header('This tool is supposed to help you understand the influence of piano s
 # st.markdown(footer_html, unsafe_allow_html=True)
 
 st.sidebar.markdown("Sonare © 2024 by Niko Plath is licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International")
+
+st.sidebar.markdown("__Contact:__ ")
