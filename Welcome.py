@@ -66,7 +66,9 @@ st.header('This tool is supposed to help you understand the influence of piano s
 #     st.line_chart(fourlog[0:20000], x_label="Frequency [Hz]", y_label="Amplitude [dB]")
 # else:
 #     st.line_chart(fourlog[0:int(f(key_num)*(n+2))], x_label="Frequency [Hz]", y_label="Amplitude [dB]")
-footer_html = """<div style='text-align: center;'>
-  <p>Sonare © 2024 by Niko Plath is licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International</p>
-</div>"""
-st.markdown(footer_html, unsafe_allow_html=True)
+# footer_html = """<div style='text-align: center;'>
+#   <p>Sonare © 2024 by Niko Plath is licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International</p>
+# </div>"""
+# st.markdown(footer_html, unsafe_allow_html=True)
+
+st.sidebar.markdown("Sonare © 2024 by Niko Plath is licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International")
