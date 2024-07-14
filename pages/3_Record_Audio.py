@@ -114,7 +114,7 @@ key_num = note_names.index(key)+1
 
 #st.subheader("Ideal String")
 
-
+st.write("Record a single note (", key ,") on the piano to calculate the inharmonicity.")
 audio = mic_recorder(
     start_prompt="Start recording",
     stop_prompt="Stop recording",
@@ -126,8 +126,10 @@ audio = mic_recorder(
     kwargs={},
     key=None
 )
+if audio:
+    st.audio(audio['bytes'])
 
-
+st.line_chart(audio, x_label="Amplitude", y_label="Sample")
 
 # st.header("Inharmonicity Calculation")
 
