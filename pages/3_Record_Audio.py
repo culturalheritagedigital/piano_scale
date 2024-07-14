@@ -382,7 +382,7 @@ if audio:
 #st.write(audio)
 
 #st.write(data)
-wav_file_path = 'D1_PROD07_key49_take1_mono_50kHz.wav'
+wav_file_path = '../D1_PROD07_key49_take1_mono_50kHz.wav'
 
 x, sr = librosa.load(wav_file_path, sr=50000)
 
