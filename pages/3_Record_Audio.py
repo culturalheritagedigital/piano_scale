@@ -121,7 +121,7 @@ audio = mic_recorder(
     stop_prompt="Stop recording",
     just_once=False,
     use_container_width=False,
-    format="wav",
+    format="webm",
     callback=None,
     args=(),
     kwargs={},
@@ -130,11 +130,9 @@ audio = mic_recorder(
 if audio:
     st.audio(audio['bytes'])
 
-data = read(audio['bytes'])
-
 st.write(audio)
 
-st.write(data)
+#st.write(data)
 
 #st.line_chart(audio, x_label="Amplitude", y_label="Sample")
 
