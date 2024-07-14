@@ -157,7 +157,7 @@ percentage_of_max_load = np.round(actual_load/max_load*100,2)
 
 st.write("The actual load is ", actual_load, "N, which is ", percentage_of_max_load, "% of the maximum load capacity (", max_load, " N, including a safety factor of 0.75).")
 
-
-df = pd.DataFrame({"Diameter (mm)": string_diameters, "Tensile strength (N/mm^2)": tensile_strengths, "Load capacity (N)": string_load_capacities})
+st.header("String Diameters, Tensile Strengths and Load Capacities")
+df = pd.DataFrame({"Diameter (mm)": string_diameters, "Tensile strength (N/mm^2)": tensile_strengths, "Max load capacity (*0.75) (N)": string_load_capacities})
 
 st.dataframe(df)
