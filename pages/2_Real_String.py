@@ -134,15 +134,22 @@ actual_B_inharmonicity = np.round(convert_delta_to_B(actual_delta_inharmonicity,
 
 st.write("The corresponding inharmonicity coefficient after Fletcher is $B=$ ", actual_B_inharmonicity, ".")
 
+factor = st.select_slider(
+    "Select a factor for $B$:",
+    options=["$B*0$", "$B*1$", "$B*10$"], value="$B*1$")
+if factor == "$B*0$":
+    fac = 0
+elif factor == "$B*1$":
+    fac = 1
+elif factor == "$B*10$":
+    fac = 10
 
 n = st.number_input("Insert number of harmonics:", value=20, min_value=1)
 
 def calculate_inharmonic_partials(f0, B, n):
     return n* f0 * np.sqrt(1 + B * n**2) 
 
-
-
-list_of_inharmonic_partial_frequencies = [calculate_inharmonic_partials(f(key_num), actual_B_inharmonicity, k) for k in np.arange(1,n+1,1)]
+list_of_inharmonic_partial_frequencies = [calculate_inharmonic_partials(f(key_num), actual_B_inharmonicity*fac, k) for k in np.arange(1,n+1,1)]
 
 damping_factor = st.slider("Select a damping factor:", min_value=0.0, max_value=3.0, value=.3, step=.1)
 
