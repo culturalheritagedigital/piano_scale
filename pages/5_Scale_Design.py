@@ -63,7 +63,7 @@ st.title('Piano Scale Design')
 
 df = pd.DataFrame({"Key number": np.arange(1,89,1),
                 "Key": note_names ,
-                   "f_1 [Hz]": np.random.randint(1,1000,88) 
+                   "f_1 [Hz]": np.random.randint(1,1000,88) ,
                    "Length [mm]": np.random.randint(1,1000,88), 
                    "Diameter [mm]": np.random.randint(1,1000,88), 
                    "delta [cent]": np.random.randint(1,1000,88), 
