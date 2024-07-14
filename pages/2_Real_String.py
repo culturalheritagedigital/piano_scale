@@ -118,7 +118,7 @@ d = st.selectbox(
     "Select a string diameter [mm]:",
     string_diameters, index=11)
 
-st.marddown("***Attention***: For the inharmonicity calculation, the fundamental frequency of the string without stiffness would be needed, which is unknown. Therefore, the fundamental frequency of the real string is used instead. This introduces an error in the inharmonicity calculation.")
+st.markdown("__Attention__: For the inharmonicity calculation, the fundamental frequency of the string without stiffness would be needed, which is unknown. Therefore, the fundamental frequency of the real string is used instead. This introduces an error in the inharmonicity calculation.")
 
 def delta_inharmonicity(d, f, l): # d and l in mm
     return 3.4 * 10**15 * d**2 / (f**2 * l**4)
