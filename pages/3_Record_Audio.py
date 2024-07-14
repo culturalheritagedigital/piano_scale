@@ -3,6 +3,9 @@ import numpy as np
 import pandas as pd
 from scipy.io.wavfile import read
 
+
+from io import BytesIO
+
 from scipy.io import wavfile
 
 from streamlit_mic_recorder import mic_recorder
@@ -129,6 +132,8 @@ audio = mic_recorder(
 )
 if audio:
     st.audio(audio['bytes'])
+
+wrapper = BytesIO(audio['bytes'])
 
 st.write(audio)
 
