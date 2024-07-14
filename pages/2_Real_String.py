@@ -155,43 +155,43 @@ else:
     st.line_chart(fourlog[0:int(f(key_num)*(n+2))], x_label="Frequency [Hz]", y_label="Amplitude [dB]")
     
 
-st.header("Taylor String Parameters")
+# st.header("Taylor String Parameters")
 
-st.latex(r''' f_n = \frac{1}{l \cdot d} \cdot \sqrt{\frac{F}{\pi \cdot \rho}}  ''')
+# st.latex(r''' f_n = \frac{1}{l \cdot d} \cdot \sqrt{\frac{F}{\pi \cdot \rho}}  ''')
 
-st.write("with l = string length [m], d = string diameter [m], F = string load [N], ρ = density of steel [kg/m^3], n = harmonic number")
-
-
-l = st.number_input("Insert string length [mm]:", value=402.00, min_value=40.00, max_value=2500.00, step=0.01)
-
-d = st.selectbox(
-    "Select a string diameter [mm]:",
-    string_diameters, index=11)
-
-st.header("Tensile Strengths and Load Capacities")
-
-def taylor_string_load(f, l, d, rho):
-    return (np.pi * rho * (f * l * d)**2)
-
-actual_load = np.round(taylor_string_load(f(key_num), l/1000, d/1000, rho),2)
-max_load = string_load_capacities[string_diameters.index(d)]
-
-percentage_of_max_load = np.round(actual_load/max_load*100,2)
-
-st.write("The actual load is ", actual_load, "N, which is ", percentage_of_max_load, "% of the maximum load capacity (", max_load, " N, including a safety factor of 0.75).")
+# st.write("with l = string length [m], d = string diameter [m], F = string load [N], ρ = density of steel [kg/m^3], n = harmonic number")
 
 
-# df = pd.DataFrame({"Diameter (mm)": string_diameters, "Tensile strength (N/mm^2)": tensile_strengths, "Max load capacity (*0.75) (N)": string_load_capacities})
+# l = st.number_input("Insert string length [mm]:", value=402.00, min_value=40.00, max_value=2500.00, step=0.01)
 
-# st.dataframe(df)
+# d = st.selectbox(
+#     "Select a string diameter [mm]:",
+#     string_diameters, index=11)
 
-st.header("String Stretching")
+# st.header("Tensile Strengths and Load Capacities")
 
-def string_stretching(load, l, d, E):
-    return (load * l) / (d**2 * (np.pi/4) * E)
+# def taylor_string_load(f, l, d, rho):
+#     return (np.pi * rho * (f * l * d)**2)
 
-actual_string_stretching = np.round(string_stretching(actual_load, l, d, E),4)
+# actual_load = np.round(taylor_string_load(f(key_num), l/1000, d/1000, rho),2)
+# max_load = string_load_capacities[string_diameters.index(d)]
 
-actual_string_stretching_percent = np.round(actual_string_stretching/l*100,2)
+# percentage_of_max_load = np.round(actual_load/max_load*100,2)
 
-st.write("The actual string stretching is ", actual_string_stretching, "mm or ", actual_string_stretching_percent,  "%.")
+# st.write("The actual load is ", actual_load, "N, which is ", percentage_of_max_load, "% of the maximum load capacity (", max_load, " N, including a safety factor of 0.75).")
+
+
+# # df = pd.DataFrame({"Diameter (mm)": string_diameters, "Tensile strength (N/mm^2)": tensile_strengths, "Max load capacity (*0.75) (N)": string_load_capacities})
+
+# # st.dataframe(df)
+
+# st.header("String Stretching")
+
+# def string_stretching(load, l, d, E):
+#     return (load * l) / (d**2 * (np.pi/4) * E)
+
+# actual_string_stretching = np.round(string_stretching(actual_load, l, d, E),4)
+
+# actual_string_stretching_percent = np.round(actual_string_stretching/l*100,2)
+
+# st.write("The actual string stretching is ", actual_string_stretching, "mm or ", actual_string_stretching_percent,  "%.")
