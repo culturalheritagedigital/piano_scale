@@ -170,7 +170,7 @@ st.dataframe(df)
 st.header("String Stretching")
 
 def string_stretching(load, l, d, E):
-    return (load * (l/1000)) / ((d/1000)**2 * (np.pi/4) * E)
+    return (load * l) / (d**2 * (np.pi/4) * E)
 
 actual_string_stretching = np.round(string_stretching(actual_load, l, d, E),4)
 
