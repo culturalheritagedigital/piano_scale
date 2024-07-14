@@ -58,7 +58,7 @@ def generate_wav_file(frequencies, amplitudes_db, damping_factors):
 
 
 
-st.title('Piano Scale Calculation')
+st.title('Piano Scale Design')
 
 #st.write('This tool is supposed to help you calculate the parameters of a piano string scale.')
 
@@ -68,44 +68,44 @@ st.title('Piano Scale Calculation')
 # dataframe = np.random.randn(30, 30)
 # st.dataframe(dataframe)
 
-kammerton = st.number_input("Choose a concert pitch:", value=440, step=1)
-st.write("The current concert pitch is ", kammerton, " Hz.")
+# kammerton = st.number_input("Choose a concert pitch:", value=440, step=1)
+# st.write("The current concert pitch is ", kammerton, " Hz.")
 
-def f(key):
-    return np.round(kammerton * 2**((key-49)/12),4)
+# def f(key):
+#     return np.round(kammerton * 2**((key-49)/12),4)
 
-key = st.selectbox(
-    "Select a key:",
-    note_names, index=48)
+# key = st.selectbox(
+#     "Select a key:",
+#     note_names, index=48)
 
-key_num = note_names.index(key)+1
+# key_num = note_names.index(key)+1
 
-st.write("The current key is ", key, " with a fundamental frequency of", f(key_num), "Hz in Equal temperament.")
+# st.write("The current key is ", key, " with a fundamental frequency of", f(key_num), "Hz in Equal temperament.")
 
-st.subheader("Ideal String")
+# st.subheader("Ideal String")
 
-st.latex(r''' f_n = n \cdot f_1 ''')
+# st.latex(r''' f_n = n \cdot f_1 ''')
 
-n = st.number_input("Insert number of harmonics:", value=20, min_value=1)
+# n = st.number_input("Insert number of harmonics:", value=20, min_value=1)
 
 
-damping_factor = st.slider("Select a damping factor:", min_value=0.0, max_value=3.0, value=.3, step=.1)
-#st.write("I'm ", age, "years old")
+# damping_factor = st.slider("Select a damping factor:", min_value=0.0, max_value=3.0, value=.3, step=.1)
+# #st.write("I'm ", age, "years old")
 
-frequencies1 = [f(key_num) * k for k in np.arange(1,n+1,1)]  # Frequencies in Hz
-amplitudes = [0-k for k in np.arange(1,n+1,1)]  # Amplitudes in dB
-damping_factors = damping_factor*np.arange(n+1)  # Damping factors in dB/sec
-signal = generate_wav_file(frequencies1, amplitudes, damping_factors)
+# frequencies1 = [f(key_num) * k for k in np.arange(1,n+1,1)]  # Frequencies in Hz
+# amplitudes = [0-k for k in np.arange(1,n+1,1)]  # Amplitudes in dB
+# damping_factors = damping_factor*np.arange(n+1)  # Damping factors in dB/sec
+# signal = generate_wav_file(frequencies1, amplitudes, damping_factors)
 
-st.audio(signal, format="audio/mpeg", sample_rate=48000)
+# st.audio(signal, format="audio/mpeg", sample_rate=48000)
 
-four = np.abs(np.fft.fft(signal[0:48000]))
-four = four/np.max(four)
-fourlog = 20*np.log10(four/np.max(four))
+# four = np.abs(np.fft.fft(signal[0:48000]))
+# four = four/np.max(four)
+# fourlog = 20*np.log10(four/np.max(four))
 
-if f(key_num)*(n+2) >20000:
-    st.line_chart(fourlog[0:20000], x_label="Frequency [Hz]", y_label="Amplitude [dB]")
-else:
-    st.line_chart(fourlog[0:int(f(key_num)*(n+2))], x_label="Frequency [Hz]", y_label="Amplitude [dB]")
+# if f(key_num)*(n+2) >20000:
+#     st.line_chart(fourlog[0:20000], x_label="Frequency [Hz]", y_label="Amplitude [dB]")
+# else:
+#     st.line_chart(fourlog[0:int(f(key_num)*(n+2))], x_label="Frequency [Hz]", y_label="Amplitude [dB]")
     
 
