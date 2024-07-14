@@ -125,11 +125,14 @@ def delta_inharmonicity(d, f, l): # d and l in mm
 
 actual_delta_inharmonicity = np.round(delta_inharmonicity(d, f(key_num), l),5)
 
-st.write("The inharmonicity of the string is $\delta = $", actual_delta_inharmonicity , "cent .")
- 
+st.write("The inharmonicity of the string after Young is $\delta = $", actual_delta_inharmonicity , "cent .")
 
+def convert_delta_to_B(delta,n):
+    return (2**((2*delta/1200))-1) / n**2
 
+actual_B_inharmonicity = np.round(convert_delta_to_B(actual_delta_inharmonicity, 1),5)
 
+st.write("The corresponding inharmonicity coefficient B after Fletcher is ", actual_B_inharmonicity, ".")
 
 
 
