@@ -114,3 +114,6 @@ else:
     st.line_chart(fourlog[0:int(f(key_num)*(n+2))], x_label="Frequency [Hz]", y_label="Amplitude [dB]")
     
 
+st.header("Taylor String Parameters")
+
+st.latex(r''' f_n = n \cdot f_1 \cdot \sqrt{1 + \frac{n^2}{4} \cdot \left( \frac{d}{r} \right)^2} ''')
