@@ -19,9 +19,9 @@ note_names = ('A0', 'A♯0', 'B0', 'C1', 'C♯1', 'D1', 'D♯1', 'E1', 'F1', 'F�
 
 st.title('Sonare')
 
-st.header('Making piano string parameters audible')
+#st.header('Making piano string parameters audible')
 
-st.write('This tool is supposed to help you understand the influence of the scale parameters on the resulting sound.')
+st.header('This tool is supposed to help you understand the influence of the piano scale parameters on the resulting sound.')
 
 #st.write('This tool is supposed to help you calculate the parameters of a piano string scale.')
 
