@@ -135,12 +135,8 @@ st.header("Taylor String Parameters")
 
 st.latex(r''' f_n = \frac{1}{l \cdot d} \cdot \sqrt{\frac{F}{\pi \cdot \rho}}  ''')
 
-st.write("with the following parameters:")
-st.write("l = string length [m]")
-st.write("d = string diameter [m]")
-st.write("F = string load capacity [N]")
-st.write("ρ = density of steel [kg/m^3]")
-st.write("n = harmonic number")
+st.write("with l = string length [m], d = string diameter [m], F = string load [N], ρ = density of steel [kg/m^3], n = harmonic number")
+
 
 l = st.number_input("Insert string length [mm]:", value=402.00, min_value=40.00, max_value=2500.00, step=0.01)
 
