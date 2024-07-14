@@ -116,4 +116,4 @@ else:
 
 st.header("Taylor String Parameters")
 
-st.latex(r''' f_n = n \cdot f_1 \cdot \sqrt{1 + \frac{n^2}{4} \cdot \left( \frac{d}{r} \right)^2} ''')
+st.latex(r''' F_n = \frac{1}{l \cdot d} \cdot \sqrt{\frac{F}{\pi \cdot \rho}}  ''')
