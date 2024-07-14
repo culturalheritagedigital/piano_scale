@@ -58,10 +58,15 @@ def generate_wav_file(frequencies, amplitudes_db, damping_factors):
 
 
 
-st.title('Piano Scale Calculation')
+st.title('Ideal Stretched String')
 
-#st.write('This tool is supposed to help you calculate the parameters of a piano string scale.')
-
+st.markdown(
+"""
+- An ideal string has no stiffness and has uniform linear density throughout.
+- The restoring force for transverse vibrations is provided solely by the tension in the string.
+- Item 3
+"""
+)
 #st.checkbox('Check me out')
 
 # st.write('Here\'s our first attempt at using data to create a table:')
