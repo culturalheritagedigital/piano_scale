@@ -87,17 +87,17 @@ E = 215000  # N/mm^2
 
 st.title('Recording to Inharmonicity')
 
-with st.expander("Click to read more:"):
+# with st.expander("Click to read more:"):
 
-    st.markdown(
-    """
-    - A real string has a bending stiffness.
-    - The restoring force for transverse vibrations is composed by the tension in the string and an additional wave length dependend part (dispersion).
-    - The partials do not follow a straight harmonic series:
-    """
-    )
+#     st.markdown(
+#     """
+#     - A real string has a bending stiffness.
+#     - The restoring force for transverse vibrations is composed by the tension in the string and an additional wave length dependend part (dispersion).
+#     - The partials do not follow a straight harmonic series:
+#     """
+#     )
 
-    st.latex(r''' f_n > n \cdot F_0 ''')
+#     st.latex(r''' f_n > n \cdot F_0 ''')
 
 
 # kammerton = st.number_input("Choose a concert pitch:", value=440, step=1)
