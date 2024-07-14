@@ -154,4 +154,4 @@ max_load = string_load_capacities[string_diameters.index(d)]
 
 percentage_of_max_load = np.round(actual_load/max_load*100,2)
 
-st.write("The actual load is ", actual_load, "N, which is ", percentage_of_max_load, "% of the maximum load capacity of the string.")
+st.write("The actual load is ", actual_load, "N, which is ", percentage_of_max_load, "% of the maximum load capacity (including a safety factor of 0.75) of the string.")
