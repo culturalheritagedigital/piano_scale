@@ -181,7 +181,7 @@ actual_string_stretching = np.round(string_stretching(actual_load, l, d, E),4)
 actual_string_stretching_percent = np.round(actual_string_stretching/l*100,2)
 
 
-df = pd.DataFrame({"Concert Pitch [Hz]": kammerton, "f_1": [f(key_num)], "String Length [mm]": l, "String Diameter [mm]": d, "Inharmonicity [cent]": actual_delta_inharmonicity, "Inharmonicity Coefficient B": actual_B_inharmonicity })    
+df = pd.DataFrame({"Key": key ,"f_1": [f(key_num)], "String Length [mm]": l, "String Diameter [mm]": d, "$\delta$ [cent]": actual_delta_inharmonicity, "Inharmonicity Coefficient B": actual_B_inharmonicity, "Load [N]": actual_load, "Max Load Capacity [N]": max_load, "Percentage of Max Load Capacity [%]": percentage_of_max_load, "String Stretching [mm]": actual_string_stretching, "String Stretching [%]": actual_string_stretching_percent})    
 
 st.dataframe(df)
 
