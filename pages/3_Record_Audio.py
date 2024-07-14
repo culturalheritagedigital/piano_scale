@@ -131,7 +131,7 @@ audio = mic_recorder(
 if audio:
     st.audio(audio['bytes'])
 
-data = read(io.BytesIO(audio['bytes']))
+data = read(audio['bytes'])
 
 st.write(audio)
 
