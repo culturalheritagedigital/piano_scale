@@ -139,9 +139,9 @@ if audio:
 
     data = read(BytesIO(audio['bytes']))
     #st.line_chart(wrapper, x_label="Amplitude", y_label="Sample")
-    st.write(data)
+    #st.write(data)
     #st.write(wrapper)
-st.write(audio)
+#st.write(audio)
 
 #st.write(data)
 
