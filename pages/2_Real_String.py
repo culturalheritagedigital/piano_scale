@@ -134,8 +134,7 @@ actual_B_inharmonicity = np.round(convert_delta_to_B(actual_delta_inharmonicity,
 
 st.write("The corresponding inharmonicity coefficient after Fletcher is $B=$ ", actual_B_inharmonicity, ".")
 
-factor = st.slider(
-    "Select a factor for $B$:", min_value=0.0, max_value=10.0, value=1.0, step=0.1,
+factor = st.slider("Select a factor for $B$:", min_value=0.0, max_value=10.0, value=1.0, step=0.1)
 
 n = st.number_input("Insert number of harmonics:", value=20, min_value=1)
 
