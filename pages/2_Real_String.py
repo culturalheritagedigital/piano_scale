@@ -135,18 +135,24 @@ actual_B_inharmonicity = np.round(convert_delta_to_B(actual_delta_inharmonicity,
 st.write("The corresponding inharmonicity coefficient after Fletcher is $B=$ ", actual_B_inharmonicity, ".")
 
 
-
-
 n = st.number_input("Insert number of harmonics:", value=20, min_value=1)
 
+def calculate_inharmonic_partials(f0, B, n):
+    return n* f0 * np.sqrt(1 + B * n**2) 
+
+
+
+list_of_inharmonic_partial_frequencies = [calculate_inharmonic_partials(f(key_num), actual_B_inharmonicity, k) for k in np.arange(1,n+1,1)]
 
 damping_factor = st.slider("Select a damping factor:", min_value=0.0, max_value=3.0, value=.3, step=.1)
+
+
 #st.write("I'm ", age, "years old")
 
-frequencies1 = [f(key_num) * k for k in np.arange(1,n+1,1)]  # Frequencies in Hz
+#frequencies1 = [f(key_num) * k for k in np.arange(1,n+1,1)]  # Frequencies in Hz
 amplitudes = [0-k for k in np.arange(1,n+1,1)]  # Amplitudes in dB
 damping_factors = damping_factor*np.arange(n+1)  # Damping factors in dB/sec
-signal = generate_wav_file(frequencies1, amplitudes, damping_factors)
+signal = generate_wav_file(list_of_inharmonic_partial_frequencies, amplitudes, damping_factors)
 
 st.audio(signal, format="audio/mpeg", sample_rate=48000)
 
