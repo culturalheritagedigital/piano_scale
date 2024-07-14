@@ -132,7 +132,7 @@ def convert_delta_to_B(delta,n):
 
 actual_B_inharmonicity = np.round(convert_delta_to_B(actual_delta_inharmonicity, 1),5)
 
-st.write("The corresponding inharmonicity coefficient B after Fletcher is ", actual_B_inharmonicity, ".")
+st.write("The corresponding inharmonicity coefficient after Fletcher is $B=$ ", actual_B_inharmonicity, ".")
 
 
 
