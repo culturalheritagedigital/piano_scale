@@ -148,7 +148,7 @@ def taylor_string_load(f, l, d, rho):
     return (np.pi * rho * (f * l * d)**2)
 
 actual_load = np.round(taylor_string_load(f(key_num), l/1000, d/1000, rho),2)
-max_load = string_load_capacities(string_diameters.index(d))
+max_load = string_load_capacities[string_diameters.index(d)]
 
 percentage_of_max_load = np.round(actual_load/max_load*100,2)
 
