@@ -21,7 +21,7 @@ st.title('Sonare')
 
 #st.header('Making piano string parameters audible')
 
-st.header('This tool is supposed to help you understand the influence of the piano scale parameters on the resulting sound.')
+st.header('This tool is supposed to help you understand the influence of piano scale parameters on the resulting sound.')
 
 #st.write('This tool is supposed to help you calculate the parameters of a piano string scale.')
 
