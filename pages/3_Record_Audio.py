@@ -356,7 +356,7 @@ key_num = note_names.index(key)+1
 
 #st.subheader("Ideal String")
 
-st.write("Record a single note (", key ,") on the piano to calculate the inharmonicity.")
+st.write("Record a single note (", key ,") on the piano to calculate its inharmonicity.")
 audio = mic_recorder(
     start_prompt="Start recording",
     stop_prompt="Stop recording",
