@@ -21,10 +21,10 @@ string_diameters = [0.700, 0.725, 0.750, 0.775, 0.800, 0.825, 0.850, 0.875, 0.90
 tensile_strengths = [2480.00, 2470.00, 2440.00, 2420.00, 2400.00, 2380.00, 2360.00, 2350.00, 2340.00, 2320.00, 2310.00, 2290.00, 2280.00, 2260.00, 2240.00, 2220.00, 2220.00, 2200.00, 2200.00, 2180.00, 2180.00, 2160.00, 2160.00, 2110.00, 2110.00, 2060.00, 2060.00, 2000.00, 2000.00, 1980.00,]
 
 # calculate the load capacity in N:
-def load_capacity(diameter, tensile_strength, safety_factor=0.75):
+def load_capacity(diameter, tensile_strength, safety_factor=0.8):
     return np.pi * (diameter/2)**2 * tensile_strength * safety_factor
 
-# String load capacity in N (including a safety factor of 0.75)
+# String load capacity in N (including a safety factor of 0.8)
 string_load_capacities = np.round([load_capacity(d, ts) for d, ts in zip(string_diameters, tensile_strengths)],2)
 
 rho = 7850  # Density of steel in kg/m^3
@@ -161,7 +161,7 @@ max_load = string_load_capacities[string_diameters.index(d)]
 
 percentage_of_max_load = np.round(actual_load/max_load*100,2)
 
-st.write("The actual load is ", actual_load, "N, which is ", percentage_of_max_load, "% of the maximum load capacity (", max_load, " N, including a safety factor of 0.75).")
+st.write("The actual load is ", actual_load, "N, which is ", percentage_of_max_load, "% of the maximum load capacity (", max_load, " N, including a safety factor of 0.8).")
 
 
 # df = pd.DataFrame({"Diameter (mm)": string_diameters, "Tensile strength (N/mm^2)": tensile_strengths, "Max load capacity (*0.75) (N)": string_load_capacities})
