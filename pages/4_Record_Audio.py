@@ -383,7 +383,7 @@ key = st.selectbox(
 
 key_num = note_names.index(key)+1
 
-st.write("The current key is ", key, " with a fundamental frequency of", f(key_num), "Hz in Equal temperament.")
+st.write("Die aktuelle Taste ist ", key, " mit einer Grundfrequenz von ", f(key_num), "Hz in gleichstufig temperierter Stimmung.")
 
 st.write("2. Drücken Sie auf 'Start recording' und spielen Sie die Taste.")
 with st.expander("Aufnahmehinweise:"):
