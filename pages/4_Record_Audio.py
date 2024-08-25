@@ -374,7 +374,7 @@ def f(key):
 # Streamlit App
 st.title("Inharmonicity Estimation")
 
-st.write("Diese App berechnet die Inharmonizität eines aufgenommenen Klavierklangs:")
+st.write("Diese App berechnet die Inharmonizität eines aufgenommenen Klavierklangs. Die Inharmonizität ist ein Maß für die Abweichung der Obertöne einer Saite von den harmonischen Vielfachen der Grundfrequenz. Sie wird durch den Inharmonizitätskoeffizienten $B$ nach Fletcher, sowie als $\delta$ nach Young angegeben.")
 st.write("1. Wählen Sie die Taste aus, die Sie aufnehmen möchten.")
 
 key = st.selectbox(
