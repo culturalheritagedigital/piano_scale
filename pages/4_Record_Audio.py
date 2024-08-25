@@ -430,6 +430,8 @@ if audio:
             st.line_chart(fourlog[:12000])
 
             f0, B, a, f, V, x = estimate_inharmonicity(numpy_array, key_num + 20, sr=sample_rate)
+
+            st.subheader("Ergebnis:")
             st.write("Taste: " + str(key)) 
             st.write("Theoretische Grundfrequenz der idealen Saite: ", np.round(f0,2), "Hz")
             st.write("Reale Grundfrequenz der aufgenommenen Saite: ", f[0], "Hz")
