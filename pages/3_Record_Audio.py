@@ -362,7 +362,7 @@ audio = mic_recorder(
     stop_prompt="Stop recording",
     just_once=False,
     use_container_width=False,
-    format="webm",
+    format="wav",
     callback=None,
     args=(),
     kwargs={},
@@ -372,115 +372,29 @@ if audio:
     st.audio(audio['bytes'])
 
 if audio:
-
     wrapper = BytesIO(audio['bytes'])
 
-    #data = read(BytesIO(audio['bytes']))
-    #st.line_chart(wrapper, x_label="Amplitude", y_label="Sample")
-    #st.write(data)
-    #st.write(wrapper)
-#st.write(audio)
 
-#st.write(data)
-# wav_file_path = '../D1_PROD07_key49_take1_mono_50kHz.wav'
-
-# x, sr = librosa.load(wav_file_path, sr=50000)
-
-# st.audio(x)
-
-
-# st.header("Inharmonicity Calculation")
-
-# l = st.number_input("Insert string length [mm]:", value=402.00, min_value=40.00, max_value=2500.00, step=0.01)
-
-# d = st.selectbox(
-#     "Select a string diameter [mm]:",
-#     string_diameters, index=11)
-
-# st.markdown("__Attention__: For the inharmonicity calculation, the fundamental frequency of the string without stiffness would be needed, which is unknown. Therefore, the fundamental frequency of the real string is used instead. This introduces an error in the inharmonicity calculation.")
-
-# def delta_inharmonicity(d, f, l): # d and l in mm
-#     return 3.4 * 10**15 * d**2 / (f**2 * l**4)
-
-# actual_delta_inharmonicity = np.round(delta_inharmonicity(d, f(key_num), l),5)
-
-# st.write("The inharmonicity of the string after Young is $\delta = $", actual_delta_inharmonicity , "cent .")
-
-# def convert_delta_to_B(delta,n):
-#     return (2**((2*delta/1200))-1) / n**2
-
-# actual_B_inharmonicity = np.round(convert_delta_to_B(actual_delta_inharmonicity, 1),5)
-
-# st.write("The corresponding inharmonicity coefficient after Fletcher is $B=$ ", actual_B_inharmonicity, ".")
-
-# factor = st.slider("Select a factor for $B$:", min_value=0.0, max_value=10.0, value=1.0, step=0.1)
-
-# n = st.number_input("Insert number of harmonics:", value=20, min_value=1)
-
-# def calculate_inharmonic_partials(f0, B, n):
-#     return n* f0 * np.sqrt(1 + B * n**2) 
-
-# list_of_inharmonic_partial_frequencies = [calculate_inharmonic_partials(f(key_num), actual_B_inharmonicity*factor, k) for k in np.arange(1,n+1,1)]
-
-# damping_factor = st.slider("Select a damping factor:", min_value=0.0, max_value=3.0, value=.3, step=.1)
-
-
-# #st.write("I'm ", age, "years old")
-
-# #frequencies1 = [f(key_num) * k for k in np.arange(1,n+1,1)]  # Frequencies in Hz
-# amplitudes = [0-k for k in np.arange(1,n+1,1)]  # Amplitudes in dB
-# damping_factors = damping_factor*np.arange(n+1)  # Damping factors in dB/sec
-# signal = generate_wav_file(list_of_inharmonic_partial_frequencies, amplitudes, damping_factors)
-
-# st.audio(signal, format="audio/mpeg", sample_rate=48000)
-
-# four = np.abs(np.fft.fft(signal[0:48000]))
-# four = four/np.max(four)
-# fourlog = 20*np.log10(four/np.max(four))
-
-# if f(key_num)*(n+2) >20000:
-#     st.line_chart(fourlog[0:20000], x_label="Frequency [Hz]", y_label="Amplitude [dB]")
-# else:
-#     st.line_chart(fourlog[0:int(f(key_num)*(n+2))], x_label="Frequency [Hz]", y_label="Amplitude [dB]")
+def audio_bytes_to_numpy(audio_dict):
+    if audio_dict is None or 'bytes' not in audio_dict:
+        return None
     
+    audio_bytes = audio_dict['bytes']
+    sample_rate = audio_dict['sample_rate']
+    
+    # Lade WAV-Daten direkt in NumPy-Array
+    audio_array = np.frombuffer(audio_bytes, dtype=np.int16)
+    
+    # Normalisiere auf Bereich [-1, 1]
+    audio_array_float = audio_array.astype(np.float32) / 32768.0
+    
+    return audio_array_float, sample_rate
 
-# st.header("Taylor String Parameters")
+audio, sample_rate = audio_bytes_to_numpy(audio)
 
-# st.latex(r''' f_n = \frac{1}{l \cdot d} \cdot \sqrt{\frac{F}{\pi \cdot \rho}}  ''')
+st.plot(audio)
 
-# st.write("with l = string length [m], d = string diameter [m], F = string load [N], ρ = density of steel [kg/m^3], n = harmonic number")
-
-
-# l = st.number_input("Insert string length [mm]:", value=402.00, min_value=40.00, max_value=2500.00, step=0.01)
-
-# d = st.selectbox(
-#     "Select a string diameter [mm]:",
-#     string_diameters, index=11)
-
-# st.header("Tensile Strengths and Load Capacities")
-
-# def taylor_string_load(f, l, d, rho):
-#     return (np.pi * rho * (f * l * d)**2)
-
-# actual_load = np.round(taylor_string_load(f(key_num), l/1000, d/1000, rho),2)
-# max_load = string_load_capacities[string_diameters.index(d)]
-
-# percentage_of_max_load = np.round(actual_load/max_load*100,2)
-
-# st.write("The actual load is ", actual_load, "N, which is ", percentage_of_max_load, "% of the maximum load capacity (", max_load, " N, including a safety factor of 0.75).")
-
-
-# # df = pd.DataFrame({"Diameter (mm)": string_diameters, "Tensile strength (N/mm^2)": tensile_strengths, "Max load capacity (*0.75) (N)": string_load_capacities})
-
-# # st.dataframe(df)
-
-# st.header("String Stretching")
-
-# def string_stretching(load, l, d, E):
-#     return (load * l) / (d**2 * (np.pi/4) * E)
-
-# actual_string_stretching = np.round(string_stretching(actual_load, l, d, E),4)
-
-# actual_string_stretching_percent = np.round(actual_string_stretching/l*100,2)
-
-# st.write("The actual string stretching is ", actual_string_stretching, "mm or ", actual_string_stretching_percent,  "%.")
+# Verwendung:
+# audio = mic_recorder(format="wav", ...)
+# if audio is not None:
+#     numpy_array, sample_rate = audio_bytes_to_numpy(audio)
