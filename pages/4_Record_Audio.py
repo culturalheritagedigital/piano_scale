@@ -435,6 +435,8 @@ if audio:
             st.write("Reale Grundfrequenz der aufgenommenen Saite: ", f[0], "Hz")
             st.write("Inharmonizitätskoeffizient $B$ nach Fletcher:  ", np.round(B,6))
             st.write("Inharmonizitätskoeffizient $\delta$ nach Young:  ", np.round(B_to_delta(B,1),2), " Cent.")
+            st.write("$\delta_{soll}$ nach Laible: ", delta_soll_laible[key_num-21], " Cent.")
+            st.write("$\delta_{soll}$ nach Fenner: ", delta_soll_fenner[key_num-21], " Cent.")
       
     else:
         st.error("Error processing audio data.")
