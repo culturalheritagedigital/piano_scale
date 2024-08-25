@@ -436,7 +436,7 @@ if audio:
             st.write("Theoretische Grundfrequenz der idealen Saite: ", np.round(f0,2), "Hz")
             st.write("Reale Grundfrequenz der aufgenommenen Saite: ", f[0], "Hz")
             st.write("Inharmonizitätskoeffizient $B$ nach Fletcher:  ", np.round(B,6))
-            st.write("Inharmonizitätskoeffizient $\delta$ nach Young:  ", np.round(B_to_delta(B,1),2), " Cent (Soll: $\delta_{Laible}$", delta_soll_laible[key_num-1], "$\delta_{Fenner}$", delta_soll_fenner[key_num-1], ").")
+            st.write("Inharmonizitätskoeffizient $\delta$ nach Young:  ", np.round(B_to_delta(B,1),2), " Cent. (Soll: $\delta_{Laible}$", delta_soll_laible[key_num-1], ", $\delta_{Fenner}$", delta_soll_fenner[key_num-1], ").")
             # st.write("$\delta_{soll}$ nach Laible: ", delta_soll_laible[key_num-1], " Cent.")
             # st.write("$\delta_{soll}$ nach Fenner: ", delta_soll_fenner[key_num-1], " Cent.")
       
