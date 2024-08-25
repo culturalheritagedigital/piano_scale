@@ -372,7 +372,7 @@ def f(key):
 
 
 # Streamlit App
-st.title("Inharmonicity estimation from recording")
+st.title("Inharmonicity Estimation")
 
 st.write("Diese App berechnet die Inharmonizität eines aufgenommenen Klavierklangs:")
 st.write("1. Wählen Sie die Taste aus, die Sie aufnehmen möchten.")
