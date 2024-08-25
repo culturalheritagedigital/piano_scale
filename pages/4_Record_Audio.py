@@ -1,18 +1,16 @@
-import streamlit as st
 import numpy as np
-import pandas as pd
-from scipy.io.wavfile import read
-
+import streamlit as st
+from streamlit_mic_recorder import mic_recorder
+#from io import BytesIO
 import librosa
-
 from math import log,ceil,pi,sin,cos
 import operator
+import pandas as pd
 
-from io import BytesIO
-
-from scipy.io import wavfile
-
-from streamlit_mic_recorder import mic_recorder
+import numpy as np
+import streamlit as st
+from math import log,ceil,pi,sin,cos
+import operator
 
 note_names = ('A0', 'A♯0', 'B0', 'C1', 'C♯1', 'D1', 'D♯1', 'E1', 'F1', 'F♯1',
        'G1', 'G♯1', 'A1', 'A♯1', 'B1', 'C2', 'C♯2', 'D2', 'D♯2', 'E2',
@@ -65,6 +63,91 @@ rho = 7850  # Density of steel in kg/m^3
 # Youngs modulus of steel in N/mm^2
 E = 215000  # N/mm^2
 
+def taylor_force(f, l, d, rho):
+    return np.round((f**2 * l**2 * d**2 * np.pi * rho )/ 10**12 ,2)    
+    """
+    Calculates the force of a string using the Taylor formula.
+    Parameters:
+    :param f: frequency in Hz
+    :param l: vibrating length in mm
+    :param d: diameter in mm
+    :param rho: density in kg/m^3
+    Returns:
+    :return F: force in N
+    """
+
+def B_to_delta(B,n):
+    return 1200 * np.log2(np.sqrt(1+B * n**2))
+    """
+    Converts the inharmonicity coefficient B to the detuning factor delta.
+    Parameters:
+    :param B: inharmonicity coefficient
+    :param n: overtone number
+    Returns:
+    :return delta: detuning factor in cents
+    """
+
+def delta_to_B(delta,n):
+    return (2**((2*delta/1200))-1) / n**2
+    """
+    Converts the detuning factor delta to the inharmonicity coefficient B.
+    Parameters:
+    :param delta: detuning factor in cents
+    :param n: overtone number
+    Returns:
+    :return B: inharmonicity coefficient
+    """
+
+
+
+delta_soll_laible = [ float("NaN")  ,  float("NaN")  ,  float("NaN")  ,  float("NaN")  ,  float("NaN")  ,  float("NaN")  ,  float("NaN")  , float("NaN")   ,
+         float("NaN") ,  float("NaN")  ,   float("NaN") ,  float("NaN")  , float("NaN")   ,  float("NaN")  ,  float("NaN")  ,  float("NaN")  ,
+         float("NaN") ,  float("NaN")  ,   float("NaN") ,   float("NaN") ,  0.049,  0.054,  0.059,  0.064,
+        0.07 ,  0.076,  0.083,  0.091,  0.099,  0.108,  0.118,  0.128,
+        0.14 ,  0.153,  0.166,  0.182,  0.198,  0.216,  0.235,  0.257,
+        0.28 ,  0.305,  0.333,  0.363,  0.396,  0.432,  0.471,  0.514,
+        0.56 ,  0.611,  0.666,  0.726,  0.792,  0.864,  0.942,  1.027,
+        1.12 ,  1.221,  1.332,  1.452,  1.584,  1.727,  1.884,  2.054,
+        2.24 ,  2.443,  2.664,  2.905,  3.168,  3.455,  3.767,  4.108,
+        4.48 ,  4.885,  5.328,  5.81 ,  6.336,  6.909,  7.534,  8.216,
+        8.96 ,  9.771, 10.655, 11.62 , 12.671, 13.818, 15.069, 16.433]
+
+delta_soll_fenner = [ float("NaN")  ,  float("NaN")  ,  float("NaN")  , float("NaN")   ,  float("NaN")  ,  float("NaN")  ,  float("NaN")  , float("NaN")   ,
+        float("NaN")  ,  float("NaN")  ,  float("NaN")  ,   float("NaN") , float("NaN")   ,  float("NaN")  ,  float("NaN")  ,  float("NaN")  ,
+        float("NaN")  ,  float("NaN")  ,  float("NaN")  ,   float("NaN") ,  0.062,  0.067,  0.074,  0.08 ,
+        0.088,  0.095,  0.104,  0.113,  0.124,  0.135,  0.147,  0.16 ,
+        0.175,  0.191,  0.208,  0.227,  0.247,  0.27 ,  0.294,  0.321,
+        0.35 ,  0.382,  0.416,  0.454,  0.495,  0.54 ,  0.589,  0.642,
+        0.7  ,  0.763,  0.832,  0.908,  0.99 ,  1.08 ,  1.177,  1.284,
+        1.4  ,  1.527,  1.665,  1.816,  1.98 ,  2.159,  2.355,  2.568,
+        2.8  ,  3.053,  3.33 ,  3.631,  3.96 ,  4.318,  4.709,  5.135,
+        5.6  ,  6.107,  6.66 ,  7.262,  7.92 ,  8.636,  9.418, 10.27 ,
+       11.2  , 12.214, 13.319, 14.525, 15.839, 17.273, 18.836, 20.541]
+
+def audio_bytes_to_numpy(audio_dict):
+    if 'bytes' not in audio_dict:
+        st.warning("Warnung: 'bytes' nicht in audio_dict gefunden.")
+        return None, None
+    
+    audio_bytes = audio_dict['bytes']
+    sample_rate = audio_dict.get('sample_rate', None)
+    
+    if not audio_bytes:
+        st.warning("Warnung: audio_bytes ist leer.")
+        return None, None
+    
+    try:
+        # Lade WAV-Daten direkt in NumPy-Array
+        audio_array = np.frombuffer(audio_bytes, dtype=np.int16)
+        
+        # Normalisiere auf Bereich [-1, 1]
+        audio_array_float = audio_array.astype(np.float32) / 32768.0
+        
+        return audio_array_float, sample_rate
+    except Exception as e:
+        st.error(f"Fehler bei der Verarbeitung der Audio-Daten: {e}")
+        return None, None
+    
 def inharmonicity(X, gt, dgt, beta, _lambda, _iter, B, f0, N, NL):
     K = len(X)
     n = np.arange(1,N+1)
@@ -184,7 +267,7 @@ def inharmonicity(X, gt, dgt, beta, _lambda, _iter, B, f0, N, NL):
 
     return a, f, B, f0, V
 
-def estimate_inharmonicity(wav_file_path, midiNum,sr=48000):
+def estimate_inharmonicity(wav_file_path, midiNum ,sr=48000):
     #wav_file = "IS-v96-m60.wav"
     #midiNum = 60
 	# noteFileS = [index for index, value in enumerate(wav_file) if value == '/'][-1]
@@ -195,7 +278,7 @@ def estimate_inharmonicity(wav_file_path, midiNum,sr=48000):
     # x = MonoLoader(filename=wav_file)()
 
     fs = sr
-    x, sr = librosa.load(wav_file_path, sr=fs)
+    x = wav_file_path
     B = initial_B
     #B = B['B']
 
@@ -273,128 +356,77 @@ def estimate_inharmonicity(wav_file_path, midiNum,sr=48000):
     # print(f)
     # print(V)
 
-    return f0_final, B1[r], a, f, V, x
+    return f0_final, B1[r], a, f, V, x    
 
-
-
-
-# def generate_wav_file(frequencies, amplitudes_db, damping_factors):
-#     duration = 3  # Duration of the sound in seconds
-
-#     hamm = np.hamming(48000)[24000:48000]
-#     ones = np.ones(int(48000*2.5))
-#     fadeout = np.append(ones, hamm)
-
-#     sample_rate = 48000  # Sample rate in Hz
-
-#     num_samples = int(duration * sample_rate)
-#     time = np.linspace(0, duration, num_samples, endpoint=False)
-
-#     # Initialize the composite sound signal
-#     signal = np.zeros(num_samples)
-
-#     # Find the loudest sine amplitude
-#     max_amplitude_db = max(amplitudes_db)
-#     max_amplitude = 10**(max_amplitude_db / 20.0)  # Convert dB to linear scale
-
-#     # Generate individual sinusoidal components
-#     for frequency, amplitude_db, damping_factor in zip(frequencies, amplitudes_db, damping_factors):
-#         # Calculate the decay factor for the damping
-#         decay = np.exp(-damping_factor * time)
-
-#         # Convert amplitude from dB to linear scale, relative to the loudest sine
-#         amplitude = 10**((amplitude_db - max_amplitude_db) / 20.0) * max_amplitude
-
-#         # Generate the sinusoidal wave with decay
-#         wave = amplitude * np.sin(2 * np.pi * frequency * time) * decay
-
-#         # Add the wave to the composite signal
-#         signal += wave
-
-#     # Normalize the signal
-#     signal /= np.max(np.abs(signal))
-
-#     # Convert the signal to the appropriate data type for WAV files (-32767 to 32767 for int16)
-#     signal = (32767 * signal).astype(np.int16)
-#     signal = signal[0:48000*3]
-#     signal = signal * fadeout
-
-#     return signal
-
-
-
-st.title('Recording to Inharmonicity')
-
-# with st.expander("Click to read more:"):
-
-#     st.markdown(
-#     """
-#     - A real string has a bending stiffness.
-#     - The restoring force for transverse vibrations is composed by the tension in the string and an additional wave length dependend part (dispersion).
-#     - The partials do not follow a straight harmonic series:
-#     """
-#     )
-
-#     st.latex(r''' f_n > n \cdot F_0 ''')
-
-
-# kammerton = st.number_input("Choose a concert pitch:", value=440, step=1)
-# st.write("The current concert pitch is ", kammerton, " Hz.")
-
-kammerton = 440
-
+kammerton = 443
 def f(key):
     return np.round(kammerton * 2**((key-49)/12),4)
 
+#############################################################################################################################
+#############################################################################################################################
+#############################################################################################################################
+#############################################################################################################################
+#############################################################################################################################
+#############################################################################################################################
+#############################################################################################################################
+
+
+# Streamlit App
+st.title("Inharmonicity estimation from recording")
+
+st.write("Diese App berechnet die Inharmonizität eines aufgenommenen Klavierklangs:")
+st.write("1. Wählen Sie die Taste aus, die Sie aufnehmen möchten.")
+
 key = st.selectbox(
-    "Select the key you will record:",
+    "Taste:",
     note_names, index=48)
 
 key_num = note_names.index(key)+1
 
-#st.write("The current key is ", key, " with a fundamental frequency of", f(key_num), "Hz in Equal temperament.")
+st.write("The current key is ", key, " with a fundamental frequency of", f(key_num), "Hz in Equal temperament.")
 
-#st.subheader("Ideal String")
+st.write("2. Drücken Sie auf 'Start recording' und spielen Sie die Taste.")
+with st.expander("Aufnahmehinweise:"):
 
-st.write("Record a single note (", key ,") on the piano to calculate its inharmonicity.")
+    st.markdown("- Die Aufnahme sollte in einem ruhigen Raum erfolgen.")
+    st.markdown("- Die Aufnahme darf nur den Ton __einer__ gespielte Taste enthalten.")
+    st.markdown("- Vor dem Spielen der Taste sollte mind. ca. 0.5 Sekunden Stille aufgenommen werden.")
+    st.markdown("- Die Aufnahme sollte mind. ca. 2 Sekunden lang sein.")
+    st.markdown("__Abfolge:__ start recording - kurz warten - Taste spielen - stop recording")
+
+st.write("3. Drücken Sie auf 'Stop recording' und warten Sie auf die Verarbeitung der Daten.")
+
 audio = mic_recorder(
     start_prompt="Start recording",
     stop_prompt="Stop recording",
-    just_once=False,
-    use_container_width=False,
     format="wav",
-    callback=None,
-    args=(),
-    kwargs={},
-    key=None
+    key="audio_recorder"
 )
+
 if audio:
     st.audio(audio['bytes'])
 
-if audio:
-    wrapper = BytesIO(audio['bytes'])
-
-
-def audio_bytes_to_numpy(audio_dict):
-    if audio_dict is None or 'bytes' not in audio_dict:
-        return None
+    numpy_array, sample_rate = audio_bytes_to_numpy(audio)
     
-    audio_bytes = audio_dict['bytes']
-    sample_rate = audio_dict['sample_rate']
-    
-    # Lade WAV-Daten direkt in NumPy-Array
-    audio_array = np.frombuffer(audio_bytes, dtype=np.int16)
-    
-    # Normalisiere auf Bereich [-1, 1]
-    audio_array_float = audio_array.astype(np.float32) / 32768.0
-    
-    return audio_array_float, sample_rate
+    if numpy_array is not None:
+        st.success("Recording was successful.")
+        
+        st.line_chart(numpy_array)
+        st.write(f"Sample Rate: {sample_rate} [Hz], recording length: {np.round(numpy_array.shape[0]/sample_rate,2)} [s]")
 
-audio, sample_rate = audio_bytes_to_numpy(audio)
+        st.write("4. Hören Sie sich die Aufnahme an: Ist (nur) ein Klavierton zu hören? Ist am Anfang etwas Stille aufgenommen? Wenn nicht, wiederholen Sie die Aufnahme.")
+        st.write("5. Drücken Sie auf 'Process audio data' um die Inharmonizität zu berechnen.")
+        data_ok = st.button("Process audio data")
 
-st.plot(audio)
-
-# Verwendung:
-# audio = mic_recorder(format="wav", ...)
-# if audio is not None:
-#     numpy_array, sample_rate = audio_bytes_to_numpy(audio)
+        if data_ok:
+            f0, B, a, f, V, x = estimate_inharmonicity(numpy_array, key_num, sr=sample_rate)
+            st.write("Taste: " + str(key)) 
+            st.write("Theoretische Grundfrequenz der idealen Saite: ", np.round(f0,2), "Hz")
+            st.write("Reale Grundfrequenz der aufgenommenen Saite: ", f[0], "Hz")
+            st.write("Inharmonizitätskoeffizient $B$ nach Fletcher:  ", np.round(B,6))
+            st.write("Inharmonizitätskoeffizient $\delta$ nach Young:  ", np.round(B_to_delta(B,1),2), " Cent.")
+      
+    else:
+        st.error("Error processing audio data.")
+else:
+    st.info("Waiting for audio recording...")
