@@ -419,6 +419,16 @@ if audio:
         data_ok = st.button("Process audio data")
 
         if data_ok:
+            # search the max position in numpy_array
+            max_pos = np.argmax(numpy_array[100:])
+            # cut the numpy_array at the max position
+            numpy_array = numpy_array[max_pos:max_pos+sample_rate]
+            #st.line_chart(numpy_array)
+            four = np.abs(np.fft.fft(numpy_array))
+            four = four/np.max(four)
+            fourlog = 20*np.log10(four/np.max(four))
+            st.line_chart(fourlog[:12000])
+
             f0, B, a, f, V, x = estimate_inharmonicity(numpy_array, key_num, sr=sample_rate)
             st.write("Taste: " + str(key)) 
             st.write("Theoretische Grundfrequenz der idealen Saite: ", np.round(f0,2), "Hz")
