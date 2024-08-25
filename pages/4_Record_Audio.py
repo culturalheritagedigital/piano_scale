@@ -394,7 +394,7 @@ with st.expander("Aufnahmehinweise:"):
     st.markdown("- Die Aufnahme sollte mind. ca. 2 Sekunden lang sein.")
     st.markdown("__Abfolge:__ start recording - kurz warten - Taste spielen - stop recording")
 
-st.write("3. Drücken Sie auf 'Stop recording' und warten Sie auf die Verarbeitung der Daten.")
+st.write("3. Drücken Sie auf 'Stop recording' und warten Sie auf die Verarbeitung der Daten. Die Berechnung der Inharmonizität kann einige Sekunden dauern.")
 
 audio = mic_recorder(
     start_prompt="Start recording",
