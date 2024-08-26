@@ -147,7 +147,8 @@ def audio_bytes_to_numpy(audio_dict):
     except Exception as e:
         st.error(f"Fehler bei der Verarbeitung der Audio-Daten: {e}")
         return None, None
-    
+
+@st.cache_data
 def inharmonicity(X, gt, dgt, beta, _lambda, _iter, B, f0, N, NL):
     K = len(X)
     n = np.arange(1,N+1)
@@ -267,6 +268,7 @@ def inharmonicity(X, gt, dgt, beta, _lambda, _iter, B, f0, N, NL):
 
     return a, f, B, f0, V
 
+@st.cache_data
 def estimate_inharmonicity(wav_file_path, midiNum ,sr=48000):
     #wav_file = "IS-v96-m60.wav"
     #midiNum = 60
