@@ -32,6 +32,51 @@ rho = 7850  # Density of steel in kg/m^3
 # Youngs modulus of steel in N/mm^2
 E = 215000  # N/mm^2
 
+def calculate_fret_position(scale_length, semitones):
+    """
+    Berechnet die Position eines Bundes auf einer Saite
+    
+    Parameters:
+    scale_length: Mensur (Länge der schwingenden Saite) in mm
+    semitones: Anzahl der Halbtöne vom Sattel
+    
+    Returns:
+    float: Abstand vom Sattel in mm
+    """
+    # Formel für gleichstufig temperierte Stimmung:
+    # Position = Mensur - (Mensur / (2^(n/12)))
+    # wobei n die Anzahl der Halbtöne ist
+    
+    position = scale_length - (scale_length / (2 ** (semitones/12)))
+    return round(position, 2)
+
+def print_common_intervals(scale_length):
+    """
+    Gibt die Positionen für häufig verwendete Intervalle aus
+    """
+    intervals = {
+        "Halbton (kleine Sekunde)": 1,
+        "Ganzton (große Sekunde)": 2,
+        "kleine Terz": 3,
+        "große Terz": 4,
+        "Quarte": 5,
+        "Tritonus": 6,
+        "Quinte": 7,
+        "kleine Sexte": 8,
+        "große Sexte": 9,
+        "kleine Septime": 10,
+        "große Septime": 11,
+        "Oktave": 12
+    }
+    
+    print(f"Bundpositionen bei einer Mensur von {scale_length} mm:")
+    print("-" * 50)
+    for interval, semitones in intervals.items():
+        position = calculate_fret_position(scale_length, semitones)
+        percent = (position / scale_length) * 100
+        print(f"{interval}: {position}mm ({percent:.1f}% der Mensur)")
+
+############################################################################################
 
 
 st.title('Clavichord')
@@ -57,6 +102,13 @@ with st.expander("Click to read more:"):
 saitenlaenge = st.number_input("Geben Sie die Länge der Saite an:", value=650, step=1)
 
 st.write("Die gewählte Saitenlänge ist: ", saitenlaenge, " mm.")
+
+
+# Beispiel für eine typische Mensur einer Konzertgitarre
+
+print_common_intervals(saitenlaenge)
+
+
 
 
 
