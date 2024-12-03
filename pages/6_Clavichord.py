@@ -128,8 +128,10 @@ saitenlaenge = st.number_input("Geben Sie die Länge der Saite an:", value=650, 
 #st.write("Die gewählte Saitenlänge ist: ", saitenlaenge, " mm.")
 
 # Erstelle und zeige den DataFrame
-df = create_interval_table(saitenlaenge)
+
 st.write("\nBundpositionen für eine Mensur von ", saitenlaenge ," mm:\n")
+
+df = create_interval_table(saitenlaenge)
 #print(df.to_string(index=False))
 st.dataframe(df)
 
