@@ -36,7 +36,7 @@ E = 215000  # N/mm^2
 
 st.title('Clavichord')
 
-st.subheader("Tangentenposition")
+st.subheader("Tangentenpositionen")
 
 with st.expander("Click to read more:"):
     st.markdown(
@@ -54,10 +54,9 @@ with st.expander("Click to read more:"):
 # dataframe = np.random.randn(30, 30)
 # st.dataframe(dataframe)
 
-saitenlaenge = st.number_input("Geben Sie die Länge der Saite an:", value=650, step=0.01)
+saitenlaenge = st.number_input("Geben Sie die Länge der Saite an:", value=650, step=1)
 
 st.write("Die gewählte Saitenlänge ist: ", saitenlaenge, " mm.")
-
 
 
 
