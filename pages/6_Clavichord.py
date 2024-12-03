@@ -69,7 +69,7 @@ def print_common_intervals(scale_length):
         "Oktave": 12
     }
     
-    st.write(f"Bundpositionen bei einer Mensur von {scale_length} mm:")
+    st.write(f"Bundpositionen bei einer Mensur von", scale_length, " mm:")
     #st.write("-" * 50)
     for interval, semitones in intervals.items():
         position = calculate_fret_position(scale_length, semitones)
@@ -101,7 +101,7 @@ with st.expander("Click to read more:"):
 
 saitenlaenge = st.number_input("Geben Sie die Länge der Saite an:", value=650, step=1)
 
-st.write("Die gewählte Saitenlänge ist: ", saitenlaenge, " mm.")
+#st.write("Die gewählte Saitenlänge ist: ", saitenlaenge, " mm.")
 
 
 # Beispiel für eine typische Mensur einer Konzertgitarre
