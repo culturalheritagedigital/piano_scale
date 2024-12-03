@@ -96,36 +96,7 @@ def create_interval_table(scale_length=650):
     
     return df
 
-
-
-# def print_common_intervals(scale_length):
-#     """
-#     Gibt die Positionen für häufig verwendete Intervalle aus
-#     """
-#     intervals = {
-#         "Halbton (kleine Sekunde)": 1,
-#         "Ganzton (große Sekunde)": 2,
-#         "kleine Terz": 3,
-#         "große Terz": 4,
-#         "Quarte": 5,
-#         "Tritonus": 6,
-#         "Quinte": 7,
-#         "kleine Sexte": 8,
-#         "große Sexte": 9,
-#         "kleine Septime": 10,
-#         "große Septime": 11,
-#         "Oktave": 12
-#     }
-    
-#     st.write(f"Bundpositionen bei einer Mensur von", scale_length, " mm:")
-#     #st.write("-" * 50)
-#     for interval, semitones in intervals.items():
-#         position = calculate_fret_position(scale_length, semitones)
-#         percent = (position / scale_length) * 100
-#         st.write(f"{interval}: {position}mm ({percent:.1f}% der Mensur)")
-
 ############################################################################################
-
 
 st.title('Clavichord')
 
