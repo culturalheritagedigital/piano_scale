@@ -69,12 +69,12 @@ def print_common_intervals(scale_length):
         "Oktave": 12
     }
     
-    print(f"Bundpositionen bei einer Mensur von {scale_length} mm:")
-    print("-" * 50)
+    st.write(f"Bundpositionen bei einer Mensur von {scale_length} mm:")
+    st.write("-" * 50)
     for interval, semitones in intervals.items():
         position = calculate_fret_position(scale_length, semitones)
         percent = (position / scale_length) * 100
-        print(f"{interval}: {position}mm ({percent:.1f}% der Mensur)")
+        st.write(f"{interval}: {position}mm ({percent:.1f}% der Mensur)")
 
 ############################################################################################
 
@@ -86,13 +86,13 @@ st.subheader("Tangentenpositionen")
 with st.expander("Click to read more:"):
     st.markdown(
     """
-    - An ideal string has no stiffness and has uniform linear density throughout.
-    - The restoring force for transverse vibrations is provided solely by the tension in the string.
-    - The partials follow a harmonic series:
+    - 
+    - 
+    - 
     """
     )
 
-    st.latex(r''' f_n = n \cdot f_1 ''')
+    # st.latex(r''' f_n = n \cdot f_1 ''')
 #st.checkbox('Check me out')
 
 # st.write('Here\'s our first attempt at using data to create a table:')
