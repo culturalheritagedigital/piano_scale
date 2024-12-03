@@ -83,10 +83,10 @@ st.title('Clavichord')
 
 st.subheader("Tangentenpositionen")
 
-with st.expander("Click to read more:"):
+with st.expander("Mehr Infos:"):
     st.markdown(
     """
-    - 
+    - Die Tangentenpositionen auf einem Clavichord sind abhängig 
     - 
     - 
     """
