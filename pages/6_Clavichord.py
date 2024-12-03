@@ -134,9 +134,14 @@ st.subheader("Tangentenpositionen")
 with st.expander("Mehr Infos:"):
     st.markdown(
     """
-    - Die Tangentenpositionen auf einem Clavichord sind abhängig 
-    - 
-    - 
+Die Tabelle zeigt:
+
+- Die Halbtonschritte von 0 (Grundton) bis 12 (Oktave)
+- Die entsprechenden musikalischen Intervallbezeichnungen
+- Die absolute Position der Tangente vom Anhangstift aus in Millimetern
+- Die relative Position als Prozentsatz der Gesamtmensur
+
+Die 0-Position (Grundton) entspricht dem Anhangstift. Alle anderen Positionen geben den Abstand vom Anhangstift an, an dem die Tangente platziert werden muss, um das entsprechende Intervall zu erzeugen.
     """
     )
 
