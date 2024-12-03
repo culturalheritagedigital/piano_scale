@@ -50,31 +50,79 @@ def calculate_fret_position(scale_length, semitones):
     position = scale_length - (scale_length / (2 ** (semitones/12)))
     return round(position, 2)
 
-def print_common_intervals(scale_length):
-    """
-    Gibt die Positionen für häufig verwendete Intervalle aus
-    """
-    intervals = {
-        "Halbton (kleine Sekunde)": 1,
-        "Ganzton (große Sekunde)": 2,
-        "kleine Terz": 3,
-        "große Terz": 4,
-        "Quarte": 5,
-        "Tritonus": 6,
-        "Quinte": 7,
-        "kleine Sexte": 8,
-        "große Sexte": 9,
-        "kleine Septime": 10,
-        "große Septime": 11,
-        "Oktave": 12
+def create_interval_table(scale_length=650):
+    # Definiere die Intervalle
+    data = {
+        'Halbtonschritte': range(13),  # 0 bis 12
+        'Intervall': [
+            'Grundton',
+            'kleine Sekunde',
+            'große Sekunde',
+            'kleine Terz',
+            'große Terz',
+            'Quarte',
+            'Tritonus',
+            'Quinte',
+            'kleine Sexte',
+            'große Sexte',
+            'kleine Septime',
+            'große Septime',
+            'Oktave'
+        ]
     }
     
-    st.write(f"Bundpositionen bei einer Mensur von", scale_length, " mm:")
-    #st.write("-" * 50)
-    for interval, semitones in intervals.items():
-        position = calculate_fret_position(scale_length, semitones)
-        percent = (position / scale_length) * 100
-        st.write(f"{interval}: {position}mm ({percent:.1f}% der Mensur)")
+    # Berechne die absoluten Längen
+    data['absolute Länge (mm)'] = [
+        scale_length - (scale_length / (2 ** (n/12))) 
+        if n > 0 
+        else 0 
+        for n in data['Halbtonschritte']
+    ]
+    
+    # Berechne die relativen Längen
+    data['relative Länge (%)'] = [
+        (length / scale_length) * 100 
+        if length > 0 
+        else 0 
+        for length in data['absolute Länge (mm)']
+    ]
+    
+    # Erstelle DataFrame
+    df = pd.DataFrame(data)
+    
+    # Formatiere die Zahlen
+    df['absolute Länge (mm)'] = df['absolute Länge (mm)'].round(2)
+    df['relative Länge (%)'] = df['relative Länge (%)'].round(2)
+    
+    return df
+
+
+
+# def print_common_intervals(scale_length):
+#     """
+#     Gibt die Positionen für häufig verwendete Intervalle aus
+#     """
+#     intervals = {
+#         "Halbton (kleine Sekunde)": 1,
+#         "Ganzton (große Sekunde)": 2,
+#         "kleine Terz": 3,
+#         "große Terz": 4,
+#         "Quarte": 5,
+#         "Tritonus": 6,
+#         "Quinte": 7,
+#         "kleine Sexte": 8,
+#         "große Sexte": 9,
+#         "kleine Septime": 10,
+#         "große Septime": 11,
+#         "Oktave": 12
+#     }
+    
+#     st.write(f"Bundpositionen bei einer Mensur von", scale_length, " mm:")
+#     #st.write("-" * 50)
+#     for interval, semitones in intervals.items():
+#         position = calculate_fret_position(scale_length, semitones)
+#         percent = (position / scale_length) * 100
+#         st.write(f"{interval}: {position}mm ({percent:.1f}% der Mensur)")
 
 ############################################################################################
 
@@ -103,13 +151,11 @@ saitenlaenge = st.number_input("Geben Sie die Länge der Saite an:", value=650, 
 
 #st.write("Die gewählte Saitenlänge ist: ", saitenlaenge, " mm.")
 
-
-# Beispiel für eine typische Mensur einer Konzertgitarre
-
-print_common_intervals(saitenlaenge)
-
-
-
+# Erstelle und zeige den DataFrame
+df = create_interval_table(saitenlaenge)
+st.write("\nBundpositionen für eine Mensur von ", saitenlaenge ," mm:\n")
+#print(df.to_string(index=False))
+st.dataframe(df)
 
 
 # n = st.number_input("Insert number of harmonics:", value=20, min_value=1)
