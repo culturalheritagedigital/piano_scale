@@ -70,7 +70,7 @@ def print_common_intervals(scale_length):
     }
     
     st.write(f"Bundpositionen bei einer Mensur von {scale_length} mm:")
-    st.write("-" * 50)
+    #st.write("-" * 50)
     for interval, semitones in intervals.items():
         position = calculate_fret_position(scale_length, semitones)
         percent = (position / scale_length) * 100
