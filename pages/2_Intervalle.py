@@ -111,13 +111,13 @@ key1 = st.selectbox(
     "Wählen Sie eine Taste:",
     note_names, index=0)
 
-key_num1 = note_names.index(key1)+1
+key_num1 = note_names.index(key1)+48
 
 key2 = st.selectbox(
     "Wählen Sie eine zweite Taste:",
     note_names, index=0)
 
-key_num2 = note_names.index(key2)+1
+key_num2 = note_names.index(key2)+48
 
 
 st.write("Die aktuell gewählten Tasten sind ", key1, " und ", key2," mit den Grundfrequenzen ", f(key_num1), "Hz und ", f(key_num2)," in gleichstufig temperierter Stimmung.")
