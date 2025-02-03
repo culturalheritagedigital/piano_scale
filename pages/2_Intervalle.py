@@ -146,5 +146,5 @@ fourlog = 20*np.log10(four/np.max(four))
 if f(key_num1)*(n+2) >20000:
     st.line_chart(fourlog[0:20000], x_label="Frequency [Hz]", y_label="Amplitude [dB]")
 else:
-    st.line_chart(fourlog[0:int(f(key_num)*(n+2))], x_label="Frequency [Hz]", y_label="Amplitude [dB]")
+    st.line_chart(fourlog[0:int(f(key_num1)*(n+2))], x_label="Frequency [Hz]", y_label="Amplitude [dB]")
     
