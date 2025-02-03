@@ -191,7 +191,7 @@ if key_num1 > key_num2:
 else:
     interv_name = intervall_name[key_num2-key_num1+12]
 
-st.write("mit einem Intervall einer ", ," in gleichstufig temperierter Stimmung.")
+st.write("mit einem Intervall einer ", interv_name," in gleichstufig temperierter Stimmung.")
 
 
 n = st.number_input("Insert number of harmonics:", value=20, min_value=1)
