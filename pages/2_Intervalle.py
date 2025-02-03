@@ -121,6 +121,9 @@ note_names = ('A4', 'A♯4',
        'B4', 'C5', 'C♯5', 'D5', 'D♯5', 'E5', 'F5', 'F♯5', 'G5', 'G♯5',
        'A5')
 
+intervall_name = ('Prime', 'kleine Sekunde', 'große Sekunde', 'kleine Terz', 'große Terz', 'reine Quarte', 'Tritonus / verminderte Quinte', 'reine Quinte', 'kleine Sexte', 'große Sexte', 'kleine Septime', 'große Septime', 'Oktave')
+
+
 def generate_wav_file(frequencies1, frequencies2, amplitudes_db, damping_factors):
     duration = 3
     hamm = np.hamming(48000)[24000:48000]
@@ -177,7 +180,13 @@ key2 = st.selectbox(
 
 key_num2 = note_names.index(key2)+48
 
-st.write("Die aktuell gewählten Tasten sind ", key1, " und ", key2," mit den Grundfrequenzen ", f(key_num1), "Hz und ", f(key_num2)," in gleichstufig temperierter Stimmung.")
+st.write("Die aktuell gewählten Tasten sind:")
+
+st.write(key1 "mit "  f(key_num1), "Hz und")
+st.write(key2 "mit "  f(key_num2), "Hz")
+
+st.write("mit einem Intervall einer " intervall_name[key_num2-key_num1]".")
+
 
 n = st.number_input("Insert number of harmonics:", value=10, min_value=1)
 
