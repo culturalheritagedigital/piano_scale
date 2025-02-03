@@ -194,9 +194,9 @@ else:
 st.write("mit einem Intervall einer ", interv_name," in gleichstufig temperierter Stimmung.")
 
 
-n = st.number_input("Insert number of harmonics:", value=20, min_value=1)
+n = st.number_input("Wählen Sie die Anzahl der Teiltöne:", value=20, min_value=1)
 
-damping_factor = st.slider("Select a damping factor:", min_value=0.0, max_value=1.0, value=.2, step=.05)
+damping_factor = st.slider("Wählen Sie einen Dämpfungsfaktor:", min_value=0.0, max_value=1.0, value=.2, step=.05)
 
 frequencies1 = [f(key_num1) * k for k in np.arange(1,n+1,1)]
 frequencies2 = [f(key_num2) * k for k in np.arange(1,n+1,1)]
