@@ -101,8 +101,9 @@ st.title('Intervalle')
 # dataframe = np.random.randn(30, 30)
 # st.dataframe(dataframe)
 
-kammerton = st.number_input("Choose a concert pitch:", value=440, step=1)
-st.write("Der aktuelle Kammerton hat ", kammerton, " Hz.")
+kammerton = 440
+# kammerton = st.number_input("Choose a concert pitch:", value=440, step=1)
+# st.write("Der aktuelle Kammerton hat ", kammerton, " Hz.")
 
 def f(key):
     return np.round(kammerton * 2**((key-49)/12),4)
