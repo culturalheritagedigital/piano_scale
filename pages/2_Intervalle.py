@@ -170,7 +170,7 @@ def f(key):
 
 key1 = st.selectbox(
     "Wählen Sie eine Taste:",
-    note_names, index=0)
+    note_names[0], index=0)
 
 key_num1 = note_names.index(key1)+48
 
