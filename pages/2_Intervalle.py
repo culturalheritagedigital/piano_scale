@@ -172,13 +172,13 @@ key1 = st.selectbox(
     "Wählen Sie eine Taste:",
     note_names[0], index=0)
 
-key_num1 = note_names.index(key1)+48
+key_num1 = note_names.index(key1)+49
 
 key2 = st.selectbox(
     "Wählen Sie eine zweite Taste:",
     note_names, index=0)
 
-key_num2 = note_names.index(key2)+48
+key_num2 = note_names.index(key2)+49
 
 st.write("Die aktuell gewählten Tasten sind:")
 
