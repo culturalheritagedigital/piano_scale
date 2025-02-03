@@ -114,7 +114,7 @@ key1 = st.selectbox(
 key_num1 = note_names.index(key1)+1
 
 key2 = st.selectbox(
-    "Wählen Sie eine Taste:",
+    "Wählen Sie eine zweite Taste:",
     note_names, index=0)
 
 key_num2 = note_names.index(key2)+1
@@ -124,10 +124,7 @@ st.write("Die aktuell gewählten Tasten sind ", key1, " und ", key2," mit den Gr
 
 #st.subheader("Ideal String")
 
-
-
 n = st.number_input("Insert number of harmonics:", value=10, min_value=1)
-
 
 damping_factor = st.slider("Select a damping factor:", min_value=0.0, max_value=3.0, value=.3, step=.1)
 #st.write("I'm ", age, "years old")
