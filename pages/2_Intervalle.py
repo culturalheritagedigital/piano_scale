@@ -182,10 +182,11 @@ key_num2 = note_names.index(key2)+48
 
 st.write("Die aktuell gewählten Tasten sind:")
 
-st.write(key1 "mit "  f(key_num1), "Hz und")
-st.write(key2 "mit "  f(key_num2), "Hz")
+st.write(key1, "mit ",  f(key_num1), "Hz und")
 
-st.write("mit einem Intervall einer " intervall_name[key_num2-key_num1]".")
+st.write(key2, "mit " , f(key_num2), "Hz")
+
+st.write("mit einem Intervall einer ", intervall_name[key_num2-key_num1],".")
 
 
 n = st.number_input("Insert number of harmonics:", value=10, min_value=1)
