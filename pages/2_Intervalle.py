@@ -187,9 +187,9 @@ st.write(key1, "mit ",  f(key_num1), "Hz")
 st.write(key2, "mit " , f(key_num2), "Hz")
 
 if key_num1 > key_num2:
-    interv_name = intervall_name[key_num2-key_num1]
+    interv_name = intervall_name[key_num1-key_num2]
 else:
-    interv_name = intervall_name[key_num2-key_num1+12]
+    interv_name = intervall_name[key_num2-key_num1]
 
 st.write("mit einem Intervall einer ", interv_name," in gleichstufig temperierter Stimmung.")
 
