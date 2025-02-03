@@ -189,7 +189,7 @@ st.write(key2, "mit " , f(key_num2), "Hz")
 st.write("mit einem Intervall einer ", intervall_name[key_num2-key_num1]," in gleichstufig temperierter Stimmung.")
 
 
-n = st.number_input("Insert number of harmonics:", value=10, min_value=1)
+n = st.number_input("Insert number of harmonics:", value=20, min_value=1)
 
 damping_factor = st.slider("Select a damping factor:", min_value=0.0, max_value=1.0, value=.2, step=.05)
 
