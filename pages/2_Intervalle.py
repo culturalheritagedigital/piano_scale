@@ -204,8 +204,8 @@ fourlog2 = 20*np.log10(four2/np.max(four2))
 
 # Create DataFrame for plotting
 max_freq = max(f(key_num1), f(key_num2))
-if max_freq*(n+2) > 20000:
-    plot_range = 20000
+if max_freq*(n+2) > 5000:
+    plot_range = 5000
 else:
     plot_range = int(max_freq*(n+2))
 
