@@ -163,7 +163,7 @@ def generate_wav_file(frequencies1, frequencies2, amplitudes_db, damping_factors
 
 st.title('Intervalle')
 
-st.write("Hier können Sie sich Intervalle anhören und deren harmonische Spektren visualisieren. Wählen Sie dazu zwei Tasten aus. Die Anzahl der Teiltöne und der Dämpfungsfaktor sind voreingestellt, können aber auch geändert werden.")
+st.write("Hier können Sie sich Intervalle in gleichstufig temperierter Stimmung anhören und deren harmonische Spektren visualisieren. Wählen Sie dazu zwei Tasten aus. Die Anzahl der Teiltöne und der Dämpfungsfaktor sind voreingestellt, können aber auch geändert werden.")
 
 kammerton = 440
 
