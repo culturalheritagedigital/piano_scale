@@ -231,4 +231,6 @@ df = pd.DataFrame({
     key2: fourlog2[0:plot_range]
 })
 
+st.write("Das Spektrum der beiden Töne ist in der folgenden Grafik dargestellt. Sie können den Frequenzbereich durch Zoomen anpassen.")
+
 st.line_chart(df)
