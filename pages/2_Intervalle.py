@@ -181,7 +181,7 @@ st.write("Die aktuell gewählten Tasten sind ", key1, " und ", key2," mit den Gr
 
 n = st.number_input("Insert number of harmonics:", value=10, min_value=1)
 
-damping_factor = st.slider("Select a damping factor:", min_value=0.0, max_value=3.0, value=.3, step=.1)
+damping_factor = st.slider("Select a damping factor:", min_value=0.0, max_value=1.0, value=.2, step=.05)
 
 frequencies1 = [f(key_num1) * k for k in np.arange(1,n+1,1)]
 frequencies2 = [f(key_num2) * k for k in np.arange(1,n+1,1)]
