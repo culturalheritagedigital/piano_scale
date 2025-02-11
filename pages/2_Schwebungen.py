@@ -124,6 +124,10 @@ note_names = ('A4', 'A♯4',
 
 intervall_name = ('Prime', 'kleine Sekunde', 'große Sekunde', 'kleine Terz', 'große Terz', 'reine Quarte', 'Tritonus / verminderte Quinte', 'reine Quinte', 'kleine Sexte', 'große Sexte', 'kleine Septime', 'große Septime', 'Oktave')
 
+st.set_page_config(
+    page_title="Sonare",
+    page_icon="🎹",
+)
 
 def generate_wav_file(frequencies1, frequencies2, amplitudes_db, damping_factors):
     duration = 3
