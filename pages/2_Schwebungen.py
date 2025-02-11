@@ -162,9 +162,9 @@ def generate_wav_file(frequencies1, frequencies2, amplitudes_db, damping_factors
     signal = signal * fadeout
     return signal, signal1, signal2
 
-st.title('Intervalle')
+st.title('Schwebungen und Rauhigkeit')
 
-st.write("Hier können Sie sich Intervalle in gleichstufig temperierter Stimmung anhören und deren harmonische Spektren visualisieren. Wählen Sie dazu zwei Tasten aus. Die Anzahl der Teiltöne und der Dämpfungsfaktor sind voreingestellt, können aber auch geändert werden.")
+st.write("Wählen Sie zwei Frequenzen aus:")
 
 kammerton = 440
 
