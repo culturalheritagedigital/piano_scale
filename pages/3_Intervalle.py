@@ -18,6 +18,7 @@
 #        'B4', 'C5', 'C♯5', 'D5', 'D♯5', 'E5', 'F5', 'F♯5', 'G5', 'G♯5',
 #        'A5')
 
+
 # def generate_wav_file(frequencies, amplitudes_db, damping_factors):
 #     duration = 3  # Duration of the sound in seconds
 

@@ -23,6 +23,7 @@ def generate_wav_file(frequencies, amplitudes_db, damping_factors):
 
     sample_rate = 48000  # Sample rate in Hz
 
+
     num_samples = int(duration * sample_rate)
     time = np.linspace(0, duration, num_samples, endpoint=False)
 

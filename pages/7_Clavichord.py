@@ -24,6 +24,7 @@ tensile_strengths = [2480.00, 2470.00, 2440.00, 2420.00, 2400.00, 2380.00, 2360.
 def load_capacity(diameter, tensile_strength, safety_factor=0.8):
     return np.pi * (diameter/2)**2 * tensile_strength * safety_factor
 
+
 # String load capacity in N (including a safety factor of 0.8)
 string_load_capacities = np.round([load_capacity(d, ts) for d, ts in zip(string_diameters, tensile_strengths)],2)
 
