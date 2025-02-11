@@ -171,47 +171,47 @@ f1 = st.number_input("f1:", value=440, min_value=1, max_value=4400)
 f2 = st.slider("f2:", min_value=f1, max_value=f1*2, value=f1, step=1)
 
 
-#m = st.number_input("f2:", value=440, min_value=1, max_value=4400)
+
+# kammerton = 440
+
+# def f(key):
+#     return np.round(kammerton * 2**((key-49)/12),4)
+
+# key1 = st.selectbox(
+#     "Wählen Sie eine Taste:",
+#     note_names[0], index=0)
+
+# key_num1 = note_names.index(key1)+49
+
+# key2 = st.selectbox(
+#     "Wählen Sie eine zweite Taste:",
+#     note_names, index=0)
+
+# key_num2 = note_names.index(key2)+49
+
+# st.write("Die aktuell gewählten Tasten sind:")
+
+# st.write(key1, "mit ",  f(key_num1), "Hz")
+
+# st.write(key2, "mit " , f(key_num2), "Hz")
+
+# if key_num1 > key_num2:
+#     interv_name = intervall_name[key_num1-key_num2]
+# else:
+#     interv_name = intervall_name[key_num2-key_num1]
+
+# st.write("mit einem Intervall einer ", interv_name," in gleichstufig temperierter Stimmung.")
 
 
+# n = st.number_input("Wählen Sie die Anzahl der Teiltöne:", value=20, min_value=1)
 
-kammerton = 440
+#damping_factor = st.slider("Wählen Sie einen Dämpfungsfaktor:", min_value=0.0, max_value=1.0, value=.2, step=.05)
 
-def f(key):
-    return np.round(kammerton * 2**((key-49)/12),4)
+n=1
+damping_factor = 0
 
-key1 = st.selectbox(
-    "Wählen Sie eine Taste:",
-    note_names[0], index=0)
-
-key_num1 = note_names.index(key1)+49
-
-key2 = st.selectbox(
-    "Wählen Sie eine zweite Taste:",
-    note_names, index=0)
-
-key_num2 = note_names.index(key2)+49
-
-st.write("Die aktuell gewählten Tasten sind:")
-
-st.write(key1, "mit ",  f(key_num1), "Hz")
-
-st.write(key2, "mit " , f(key_num2), "Hz")
-
-if key_num1 > key_num2:
-    interv_name = intervall_name[key_num1-key_num2]
-else:
-    interv_name = intervall_name[key_num2-key_num1]
-
-st.write("mit einem Intervall einer ", interv_name," in gleichstufig temperierter Stimmung.")
-
-
-n = st.number_input("Wählen Sie die Anzahl der Teiltöne:", value=20, min_value=1)
-
-damping_factor = st.slider("Wählen Sie einen Dämpfungsfaktor:", min_value=0.0, max_value=1.0, value=.2, step=.05)
-
-frequencies1 = [f(key_num1) * k for k in np.arange(1,n+1,1)]
-frequencies2 = [f(key_num2) * k for k in np.arange(1,n+1,1)]
+frequencies1 = [f1 * k for k in np.arange(1,n+1,1)]
+frequencies2 = [f2 * k for k in np.arange(1,n+1,1)]
 
 amplitudes = [0-k for k in np.arange(1,n+1,1)]
 damping_factors = damping_factor*np.arange(n+1)
@@ -230,7 +230,7 @@ four2 = four2/np.max(four2)
 fourlog2 = 20*np.log10(four2/np.max(four2))
 
 # Create DataFrame for plotting
-max_freq = max(f(key_num1), f(key_num2))
+max_freq = max(f1, f2)
 if max_freq*(n+2) > 5000:
     plot_range = 5000
 else:
