@@ -130,7 +130,7 @@ st.set_page_config(
 )
 
 def generate_wav_file(frequencies1, frequencies2, amplitudes_db, damping_factors):
-    duration = 3
+    duration = 5
     hamm = np.hamming(48000)[24000:48000]
     ones = np.ones(int(48000*2.5))
     fadeout = np.append(ones, hamm)
