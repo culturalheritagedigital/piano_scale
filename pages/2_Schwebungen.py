@@ -166,6 +166,12 @@ st.title('Schwebungen und Rauhigkeit')
 
 st.write("Wählen Sie zwei Frequenzen aus:")
 
+n = st.number_input("f1:", value=440, min_value=1, max_value=4400)
+
+m = st.number_input("f2:", value=440, min_value=1, max_value=4400)
+
+
+
 kammerton = 440
 
 def f(key):
