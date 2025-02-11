@@ -244,5 +244,5 @@ df = pd.DataFrame({
 })
 
 st.write("Das Spektrum der beiden Töne ist in der folgenden Grafik dargestellt. Sie können den Frequenzbereich durch Zoomen anpassen.")
-
+st.line_chart(signal)
 st.line_chart(df)
