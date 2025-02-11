@@ -230,11 +230,13 @@ four2 = four2/np.max(four2)
 fourlog2 = 20*np.log10(four2/np.max(four2))
 
 # Create DataFrame for plotting
-max_freq = max(f1, f2)
-if max_freq*(n+2) > 5000:
-    plot_range = 5000
-else:
-    plot_range = int(max_freq*(n+2))
+# max_freq = max(f1, f2)
+# if max_freq*(n+2) >5000:
+#     plot_range = 5000
+# else:
+#     plot_range = int(max_freq*(n+2))
+
+plot_range = f2*2
 
 df = pd.DataFrame({
     f1: fourlog1[0:plot_range],
