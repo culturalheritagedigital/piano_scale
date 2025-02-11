@@ -2,6 +2,11 @@ import streamlit as st
 import numpy as np
 
 
+st.set_page_config(
+    page_title="Hello",
+    page_icon="👋",
+)
+
 
 note_names = ('A0', 'A♯0', 'B0', 'C1', 'C♯1', 'D1', 'D♯1', 'E1', 'F1', 'F♯1',
        'G1', 'G♯1', 'A1', 'A♯1', 'B1', 'C2', 'C♯2', 'D2', 'D♯2', 'E2',
@@ -71,6 +76,6 @@ st.header('... helps you to understand the influence of piano scale parameters o
 # </div>"""
 # st.markdown(footer_html, unsafe_allow_html=True)
 
-st.sidebar.markdown("Sonare © 2024 by Niko Plath is licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International")
+st.sidebar.markdown("Sonare © 2025 by Niko Plath is licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International")
 
 st.sidebar.markdown("Contact: [www.culturalheritage.digital](http://www.culturalheritage.digital/)")
