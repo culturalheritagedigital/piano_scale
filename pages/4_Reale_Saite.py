@@ -20,7 +20,7 @@ string_diameters = [0.700, 0.725, 0.750, 0.775, 0.800, 0.825, 0.850, 0.875, 0.90
 # Tensile strengths of steel in N/mm^2
 tensile_strengths = [2480.00, 2470.00, 2440.00, 2420.00, 2400.00, 2380.00, 2360.00, 2350.00, 2340.00, 2320.00, 2310.00, 2290.00, 2280.00, 2260.00, 2240.00, 2220.00, 2220.00, 2200.00, 2200.00, 2180.00, 2180.00, 2160.00, 2160.00, 2110.00, 2110.00, 2060.00, 2060.00, 2000.00, 2000.00, 1980.00,]
 
-# calculate the load capacity in N:
+# calculate the load capacity din N:
 def load_capacity(diameter, tensile_strength, safety_factor=0.8):
     return np.pi * (diameter/2)**2 * tensile_strength * safety_factor
 
