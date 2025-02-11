@@ -237,8 +237,8 @@ else:
     plot_range = int(max_freq*(n+2))
 
 df = pd.DataFrame({
-    key1: fourlog1[0:plot_range],
-    key2: fourlog2[0:plot_range]
+    f1: fourlog1[0:plot_range],
+    f2: fourlog2[0:plot_range]
 })
 
 st.write("Das Spektrum der beiden Töne ist in der folgenden Grafik dargestellt. Sie können den Frequenzbereich durch Zoomen anpassen.")
