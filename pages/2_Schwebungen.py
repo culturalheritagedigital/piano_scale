@@ -174,7 +174,7 @@ f1 = st.number_input("f1:", value=440, min_value=1, max_value=4400)
 
 #f2 = st.number_input("f2:", value=f1+1, min_value=1, max_value=4400)
 
-f2 = st.slider("f2:", min_value=f2, max_value=f1*2, value=f1+1, step=1)
+f2 = st.slider("f2:", min_value=f1, max_value=f1*2, value=f1+1, step=1)
 
 st.write("Frequenzdifferenz: " + str(f2-f1) + " Hz.")
 
