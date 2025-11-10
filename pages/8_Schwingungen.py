@@ -47,8 +47,9 @@ def generate_damped_tone(frequency, A0, delta, duration=3.0, n_harmonics=10):
 st.title('Gedämpfte Schwingungen')
 
 st.markdown("""
-# Diese App visualisiert gedämpfte harmonische Schwingungen, wie sie bei Klaviersaiten, 
-# Stimmgabeln und anderen schwingenden Systemen auftreten.
+Eine gedämpfte Schwingung tritt auf, wenn ein schwingendes System Energie an seine Umgebung abgibt, 
+was zu einem allmählichen Abklingen der Amplitude über die Zeit führt. 
+Dies ist in vielen realen Systemen der Fall, wie z.B. bei einer schwingenden Saite eines Musikinstruments, die durch Luftwiderstand und innere Reibung gedämpft wird.
 
 **Mathematische Beschreibung:** 
 $$y(t) = A_0 \cdot \sin(\omega_d t + \\varphi_0) \cdot e^{-\delta t}$$
