@@ -107,20 +107,16 @@ with tab1:
         # DataFrame für Plotting erstellen
         if show_envelope:
             df = pd.DataFrame({
-                'Zeit [s]': t,
                 'Gedämpfte Schwingung': y,
                 'Einhüllende +': envelope_pos,
                 'Einhüllende -': envelope_neg
-            })
-            df = df.set_index('Zeit [s]')
+            }, index=t)
         else:
             df = pd.DataFrame({
-                'Zeit [s]': t,
                 'Gedämpfte Schwingung': y
-            })
-            df = df.set_index('Zeit [s]')
+            }, index=t)
         
-        st.line_chart(df, height=500)
+        st.line_chart(df, height=500, x_label="Zeit [s]", y_label="Auslenkung [cm]")
         
         st.caption("**Legende:** Blaue Linie = Gedämpfte Schwingung; Rote Linien = Einhüllende $A(t) = A_0 \cdot e^{-\delta t}$")
         
@@ -210,12 +206,10 @@ with tab2:
         
         # DataFrame für Plotting
         df_audio = pd.DataFrame({
-            'Zeit [s]': time_display,
             'Amplitude': signal_display
-        })
-        df_audio = df_audio.set_index('Zeit [s]')
+        }, index=time_display)
         
-        st.line_chart(df_audio, height=400)
+        st.line_chart(df_audio, height=400, x_label="Zeit [s]", y_label="Amplitude")
         st.caption(f"Zeitverlauf des Tons {selected_note} (erste {display_duration} s)")
         
         st.info(f"""
@@ -270,14 +264,12 @@ with tab3:
     
     # DataFrame für Plotting
     df_comp = pd.DataFrame({
-        'Zeit [s]': t_comp,
         f'Schwache Dämpfung (δ₁={delta1:.2f} s⁻¹)': y1,
         f'Mittlere Dämpfung (δ₂={delta2:.2f} s⁻¹)': y2,
         f'Starke Dämpfung (δ₃={delta3:.2f} s⁻¹)': y3
-    })
-    df_comp = df_comp.set_index('Zeit [s]')
+    }, index=t_comp)
     
-    st.line_chart(df_comp, height=500)
+    st.line_chart(df_comp, height=500, x_label="Zeit [s]", y_label="Auslenkung [cm]")
     
     st.caption("**Beobachtung:** Je größer die Dämpfungskonstante δ, desto schneller klingt die Schwingung ab.")
     
@@ -367,12 +359,10 @@ with tab4:
             y_vis = A_t0 * np.exp(-delta_calculated * (t_vis - t0))
             
             df_vis = pd.DataFrame({
-                'Zeit [s]': t_vis,
                 'Amplitude [cm]': y_vis
-            })
-            df_vis = df_vis.set_index('Zeit [s]')
+            }, index=t_vis)
             
-            st.line_chart(df_vis, height=300)
+            st.line_chart(df_vis, height=300, x_label="Zeit [s]", y_label="Amplitude [cm]")
             st.caption(f"Exponentielles Abklingen mit δ = {delta_calculated:.4f} s⁻¹")
             
         else:
