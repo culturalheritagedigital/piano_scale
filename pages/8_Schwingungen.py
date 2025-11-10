@@ -1,9 +1,6 @@
 import streamlit as st
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
-from matplotlib.animation import FuncAnimation
-from scipy.io import wavfile
 
 st.set_page_config(
     page_title="Gedämpfte Schwingungen",
@@ -11,26 +8,38 @@ st.set_page_config(
     layout="wide"
 )
 
-def generate_damped_tone(frequency, A0, delta, duration=3.0):
-    """Generiert einen gedämpften Ton"""
+def generate_damped_tone(frequency, A0, delta, duration=3.0, n_harmonics=10):
+    """Generiert einen gedämpften Ton mit Obertönen"""
     sample_rate = 48000
     num_samples = int(duration * sample_rate)
     time = np.linspace(0, duration, num_samples, endpoint=False)
     
-    # Gedämpfte Schwingung
-    decay = np.exp(-delta * time)
-    signal = A0 * np.sin(2 * np.pi * frequency * time) * decay
+    signal = np.zeros(num_samples)
+    
+    # Generiere Obertöne
+    for k in range(1, n_harmonics + 1):
+        freq_k = frequency * k
+        amplitude_k = 1.0 / k
+        damping_k = delta * k
+        
+        decay = np.exp(-damping_k * time)
+        wave = amplitude_k * np.sin(2 * np.pi * freq_k * time) * decay
+        signal += wave
     
     # Fadeout am Ende
     hamm = np.hamming(48000)[24000:48000]
     ones = np.ones(int(sample_rate * (duration - 0.5)))
     fadeout = np.append(ones, hamm)
     
+    if len(signal) > len(fadeout):
+        signal = signal[:len(fadeout)]
+    
+    signal = signal * fadeout
+    
     # Normalisierung
     if np.max(np.abs(signal)) > 0:
         signal = signal / np.max(np.abs(signal))
     
-    signal = signal * fadeout
     signal = (32767 * signal).astype(np.int16)
     
     return signal, time
@@ -50,9 +59,6 @@ wobei:
 - $\omega_d$ = Kreisfrequenz
 - $\varphi_0$ = Nullphasenwinkel
 """)
-
-# Sidebar für Parameter
-st.sidebar.header("Parameter der Schwingung")
 
 # Tabs für verschiedene Ansichten
 tab1, tab2, tab3, tab4 = st.tabs([
@@ -83,6 +89,8 @@ with tab1:
         
         duration = st.slider("Darstellungsdauer [s]:", 
                            min_value=5, max_value=30, value=15, step=1)
+        
+        show_envelope = st.checkbox("Zeige Einhüllende", value=True)
     
     with col1:
         # Berechnung der Schwingung
@@ -96,26 +104,25 @@ with tab1:
         envelope_pos = A0 * np.exp(-delta * t)
         envelope_neg = -A0 * np.exp(-delta * t)
         
-        # Plotting
-        fig, ax = plt.subplots(figsize=(12, 6))
+        # DataFrame für Plotting erstellen
+        if show_envelope:
+            df = pd.DataFrame({
+                'Zeit [s]': t,
+                'Gedämpfte Schwingung': y,
+                'Einhüllende +': envelope_pos,
+                'Einhüllende -': envelope_neg
+            })
+            df = df.set_index('Zeit [s]')
+        else:
+            df = pd.DataFrame({
+                'Zeit [s]': t,
+                'Gedämpfte Schwingung': y
+            })
+            df = df.set_index('Zeit [s]')
         
-        # Einhüllende (gestrichelt)
-        ax.plot(t, envelope_pos, 'r--', linewidth=2, label='Einhüllende: $A(t) = A_0 \cdot e^{-\delta t}$')
-        ax.plot(t, envelope_neg, 'r--', linewidth=2)
+        st.line_chart(df, height=500)
         
-        # Gedämpfte Schwingung
-        ax.plot(t, y, 'b-', linewidth=1.5, label='Gedämpfte Schwingung')
-        
-        ax.axhline(y=0, color='k', linestyle='-', linewidth=0.5, alpha=0.3)
-        ax.set_xlabel('Zeit $t$ [s]', fontsize=12)
-        ax.set_ylabel('Auslenkung $y$ [cm]', fontsize=12)
-        ax.set_title('Gedämpfte harmonische Schwingung', fontsize=14, fontweight='bold')
-        ax.grid(True, alpha=0.3)
-        ax.legend(fontsize=11)
-        ax.set_xlim(0, duration)
-        
-        st.pyplot(fig)
-        plt.close()
+        st.caption("**Legende:** Blaue Linie = Gedämpfte Schwingung; Rote Linien = Einhüllende $A(t) = A_0 \cdot e^{-\delta t}$")
         
         # Zusätzliche Berechnungen
         st.subheader("Berechnete Werte")
@@ -135,6 +142,15 @@ with tab1:
             T_half = 0.693/delta if delta > 0 else np.inf
             st.metric("Halbwertszeit $T_{1/2}$", 
                      f"{T_half:.2f} s" if T_half != np.inf else "∞")
+        
+        # Zusätzliche Informationen
+        if delta > 0:
+            st.info(f"""
+            **Physikalische Interpretation:**
+            - Nach {tau:.2f} s ist die Amplitude auf **{100/np.e:.1f}%** (≈37%) abgefallen
+            - Nach {T_half:.2f} s ist die Amplitude auf **50%** abgefallen
+            - Nach {3*tau:.2f} s ist die Amplitude auf **{100/np.e**3:.1f}%** (≈5%) abgefallen
+            """)
 
 with tab2:
     st.header("Akustisches Beispiel: Gedämpfter Ton")
@@ -156,7 +172,7 @@ with tab2:
         selected_note = st.selectbox("Wählen Sie einen Ton:", note_names, index=5)
         tone_frequency = note_freqs[note_names.index(selected_note)]
         
-        st.write(f"Frequenz: {tone_frequency:.2f} Hz")
+        st.write(f"**Frequenz:** {tone_frequency:.2f} Hz")
         
         tone_delta = st.slider("Dämpfungskonstante $\delta$ [s⁻¹] für den Ton:", 
                               min_value=0.1, max_value=3.0, value=0.8, step=0.1,
@@ -166,64 +182,51 @@ with tab2:
                                  min_value=1.0, max_value=5.0, value=3.0, step=0.5,
                                  key="tone_duration")
         
-        # Generiere Ton mit Teiltönen (harmonischen)
-        n_harmonics = 10
-        signal_combined = np.zeros(int(48000 * tone_duration))
-        time_audio = np.linspace(0, tone_duration, int(48000 * tone_duration))
+        n_harmonics = st.slider("Anzahl der Obertöne:", 
+                               min_value=1, max_value=20, value=10, step=1)
         
-        for k in range(1, n_harmonics + 1):
-            freq_k = tone_frequency * k
-            amplitude_k = 1.0 / k  # Abnehmende Amplitude für Obertöne
-            damping_k = tone_delta * k  # Höhere Obertöne dämpfen schneller
-            
-            decay = np.exp(-damping_k * time_audio)
-            wave = amplitude_k * np.sin(2 * np.pi * freq_k * time_audio) * decay
-            signal_combined += wave
-        
-        # Fadeout
-        hamm = np.hamming(48000)[24000:48000]
-        ones = np.ones(int(48000 * (tone_duration - 0.5)))
-        fadeout = np.append(ones, hamm)
-        
-        if len(signal_combined) > len(fadeout):
-            signal_combined = signal_combined[:len(fadeout)]
-        
-        signal_combined = signal_combined * fadeout
-        
-        # Normalisierung
-        if np.max(np.abs(signal_combined)) > 0:
-            signal_combined = signal_combined / np.max(np.abs(signal_combined))
-        signal_combined = (32767 * signal_combined).astype(np.int16)
+        # Generiere Ton
+        signal_combined, time_audio = generate_damped_tone(
+            tone_frequency, 1.0, tone_delta, tone_duration, n_harmonics
+        )
         
         st.audio(signal_combined, format="audio/wav", sample_rate=48000)
+        
+        st.success(f"""
+        **Generierter Ton:**
+        - Note: **{selected_note}**
+        - Grundfrequenz: **{tone_frequency:.2f} Hz**
+        - Anzahl Obertöne: **{n_harmonics}**
+        """)
     
     with col2:
         st.subheader("Visualisierung des Tons")
         
-        # Zeige die ersten 0.5 Sekunden
-        display_duration = min(0.5, tone_duration)
+        # Zeige die ersten 0.2 Sekunden für bessere Sichtbarkeit
+        display_duration = min(0.2, tone_duration)
         samples_to_display = int(48000 * display_duration)
         time_display = time_audio[:samples_to_display]
         signal_display = signal_combined[:samples_to_display] / 32767.0
         
-        fig2, ax2 = plt.subplots(figsize=(8, 5))
-        ax2.plot(time_display, signal_display, 'b-', linewidth=0.8)
-        ax2.set_xlabel('Zeit [s]', fontsize=11)
-        ax2.set_ylabel('Amplitude', fontsize=11)
-        ax2.set_title(f'Zeitverlauf des Tons {selected_note} (erste {display_duration} s)', 
-                     fontsize=12, fontweight='bold')
-        ax2.grid(True, alpha=0.3)
-        ax2.set_xlim(0, display_duration)
+        # DataFrame für Plotting
+        df_audio = pd.DataFrame({
+            'Zeit [s]': time_display,
+            'Amplitude': signal_display
+        })
+        df_audio = df_audio.set_index('Zeit [s]')
         
-        st.pyplot(fig2)
-        plt.close()
+        st.line_chart(df_audio, height=400)
+        st.caption(f"Zeitverlauf des Tons {selected_note} (erste {display_duration} s)")
         
         st.info(f"""
         **Physikalische Parameter:**
-        - Grundfrequenz: {tone_frequency:.2f} Hz
-        - Dämpfungskonstante: {tone_delta:.2f} s⁻¹
-        - Abklingzeit: {1/tone_delta:.2f} s
-        - Halbwertszeit: {0.693/tone_delta:.2f} s
+        - Grundfrequenz: **{tone_frequency:.2f} Hz**
+        - Dämpfungskonstante: **{tone_delta:.2f} s⁻¹**
+        - Abklingzeit τ: **{1/tone_delta:.2f} s**
+        - Halbwertszeit T₁/₂: **{0.693/tone_delta:.2f} s**
+        
+        **Obertöne:** Die Obertöne dämpfen schneller ab (δₖ = k·δ),
+        was dem natürlichen Verhalten von Saiten entspricht.
         """)
 
 with tab3:
@@ -265,26 +268,18 @@ with tab3:
     y2 = A0_comp * np.sin(omega_comp * t_comp) * np.exp(-delta2 * t_comp)
     y3 = A0_comp * np.sin(omega_comp * t_comp) * np.exp(-delta3 * t_comp)
     
-    # Plotting
-    fig3, ax3 = plt.subplots(figsize=(14, 7))
+    # DataFrame für Plotting
+    df_comp = pd.DataFrame({
+        'Zeit [s]': t_comp,
+        f'Schwache Dämpfung (δ₁={delta1:.2f} s⁻¹)': y1,
+        f'Mittlere Dämpfung (δ₂={delta2:.2f} s⁻¹)': y2,
+        f'Starke Dämpfung (δ₃={delta3:.2f} s⁻¹)': y3
+    })
+    df_comp = df_comp.set_index('Zeit [s]')
     
-    ax3.plot(t_comp, y1, 'b-', linewidth=2, 
-            label=f'Schwache Dämpfung: $\delta_1 = {delta1:.2f}$ s$^{{-1}}$')
-    ax3.plot(t_comp, y2, 'g-', linewidth=2, 
-            label=f'Mittlere Dämpfung: $\delta_2 = {delta2:.2f}$ s$^{{-1}}$')
-    ax3.plot(t_comp, y3, 'r-', linewidth=2, 
-            label=f'Starke Dämpfung: $\delta_3 = {delta3:.2f}$ s$^{{-1}}$')
+    st.line_chart(df_comp, height=500)
     
-    ax3.axhline(y=0, color='k', linestyle='-', linewidth=0.5, alpha=0.3)
-    ax3.set_xlabel('Zeit $t$ [s]', fontsize=13)
-    ax3.set_ylabel('Auslenkung $y$ [cm]', fontsize=13)
-    ax3.set_title('Vergleich verschiedener Dämpfungsstärken', fontsize=15, fontweight='bold')
-    ax3.grid(True, alpha=0.3)
-    ax3.legend(fontsize=12, loc='upper right')
-    ax3.set_xlim(0, 15)
-    
-    st.pyplot(fig3)
-    plt.close()
+    st.caption("**Beobachtung:** Je größer die Dämpfungskonstante δ, desto schneller klingt die Schwingung ab.")
     
     # Vergleichstabelle
     st.subheader("Charakteristische Zeiten im Vergleich")
@@ -293,24 +288,28 @@ with tab3:
         'Parameter': ['Dämpfungskonstante δ [s⁻¹]', 
                      'Abklingzeit τ = 1/δ [s]', 
                      'Halbwertszeit T₁/₂ [s]',
-                     'Zeit bis 10% von A₀ [s]'],
+                     'Zeit bis 10% von A₀ [s]',
+                     'Zeit bis 1% von A₀ [s]'],
         'Schwache Dämpfung': [
             f'{delta1:.3f}',
             f'{1/delta1:.2f}',
             f'{0.693/delta1:.2f}',
-            f'{np.log(10)/delta1:.2f}'
+            f'{np.log(10)/delta1:.2f}',
+            f'{np.log(100)/delta1:.2f}'
         ],
         'Mittlere Dämpfung': [
             f'{delta2:.3f}',
             f'{1/delta2:.2f}',
             f'{0.693/delta2:.2f}',
-            f'{np.log(10)/delta2:.2f}'
+            f'{np.log(10)/delta2:.2f}',
+            f'{np.log(100)/delta2:.2f}'
         ],
         'Starke Dämpfung': [
             f'{delta3:.3f}',
             f'{1/delta3:.2f}',
             f'{0.693/delta3:.2f}',
-            f'{np.log(10)/delta3:.2f}'
+            f'{np.log(10)/delta3:.2f}',
+            f'{np.log(100)/delta3:.2f}'
         ]
     }
     
@@ -351,8 +350,9 @@ with tab4:
             
             st.write("**Rechenweg:**")
             st.latex(r'A(t) = A_0 \cdot e^{-\delta t}')
-            st.latex(rf'\frac{{A(t_1)}}{{A(t_0)}} = e^{{-\delta (t_1 - t_0)}}')
-            st.latex(rf'\delta = -\frac{{\ln(A(t_1)/A(t_0))}}{{t_1 - t_0}} = -\frac{{\ln({A_t1:.2f}/{A_t0:.2f})}}{{{t1:.2f} - {t0:.2f}}} = {delta_calculated:.4f} \text{{ s}}^{{-1}}')
+            st.latex(r'\frac{A(t_1)}{A(t_0)} = e^{-\delta (t_1 - t_0)}')
+            st.latex(r'\delta = -\frac{\ln(A(t_1)/A(t_0))}{t_1 - t_0}')
+            st.latex(rf'\delta = -\frac{{\ln({A_t1:.2f}/{A_t0:.2f})}}{{{t1:.2f} - {t0:.2f}}} = {delta_calculated:.4f} \text{{ s}}^{{-1}}')
             
             # Weitere Größen
             tau_calc = 1/delta_calculated
@@ -360,6 +360,21 @@ with tab4:
             
             st.write(f"**Abklingzeit:** τ = 1/δ = {tau_calc:.3f} s")
             st.write(f"**Halbwertszeit:** T₁/₂ = 0.693/δ = {T_half_calc:.3f} s")
+            
+            # Visualisierung der berechneten Schwingung
+            st.write("**Visualisierung der berechneten Schwingung:**")
+            t_vis = np.linspace(0, max(10, t1*2), 500)
+            y_vis = A_t0 * np.exp(-delta_calculated * (t_vis - t0))
+            
+            df_vis = pd.DataFrame({
+                'Zeit [s]': t_vis,
+                'Amplitude [cm]': y_vis
+            })
+            df_vis = df_vis.set_index('Zeit [s]')
+            
+            st.line_chart(df_vis, height=300)
+            st.caption(f"Exponentielles Abklingen mit δ = {delta_calculated:.4f} s⁻¹")
+            
         else:
             st.warning("Bitte stellen Sie sicher, dass t₁ > t₀ und A(t₀) > A(t₁)")
     
@@ -380,15 +395,15 @@ with tab4:
         
         st.write("**Berechnung des logarithmischen Dekrements:**")
         
-        A_n = st.number_input("Amplitude A_n [cm]:", 
+        A_n = st.number_input("Amplitude Aₙ [cm]:", 
                              min_value=0.1, max_value=10.0, value=5.0, step=0.1,
                              key="A_n")
         
-        A_n1 = st.number_input("Folgende Amplitude A_(n+1) [cm]:", 
+        A_n1 = st.number_input("Folgende Amplitude Aₙ₊₁ [cm]:", 
                               min_value=0.1, max_value=10.0, value=4.1, step=0.1,
                               key="A_n1")
         
-        T_period = st.number_input("Periodendauer T_d [s]:", 
+        T_period = st.number_input("Periodendauer Td [s]:", 
                                   min_value=0.01, max_value=10.0, value=0.4, step=0.01,
                                   key="T_period")
         
@@ -397,37 +412,71 @@ with tab4:
             delta_from_Lambda = Lambda / T_period
             
             st.success(f"**Logarithmisches Dekrement:** Λ = {Lambda:.4f}")
-            st.success(f"**Dämpfungskonstante:** δ = Λ/T_d = {delta_from_Lambda:.4f} s⁻¹")
+            st.success(f"**Dämpfungskonstante:** δ = Λ/Td = {delta_from_Lambda:.4f} s⁻¹")
+            
+            # Weitere Berechnungen
+            tau_lambda = 1/delta_from_Lambda
+            T_half_lambda = 0.693/delta_from_Lambda
+            
+            st.write(f"**Abklingzeit:** τ = {tau_lambda:.3f} s")
+            st.write(f"**Halbwertszeit:** T₁/₂ = {T_half_lambda:.3f} s")
             
             st.write("**Interpretation:**")
             if Lambda < 0.1:
-                st.info("Sehr schwache Dämpfung - die Schwingung klingt langsam ab.")
+                st.info("✅ Sehr schwache Dämpfung - die Schwingung klingt langsam ab.")
             elif Lambda < 0.5:
-                st.info("Moderate Dämpfung - typisch für gut schwingende Systeme.")
+                st.info("✅ Moderate Dämpfung - typisch für gut schwingende Systeme.")
             else:
-                st.info("Starke Dämpfung - die Schwingung klingt schnell ab.")
+                st.info("⚠️ Starke Dämpfung - die Schwingung klingt schnell ab.")
+            
+            # Anzahl Schwingungen bis auf 50% und 10%
+            n_50 = T_half_lambda / T_period
+            n_10 = np.log(10) / delta_from_Lambda / T_period
+            
+            st.write(f"""
+            **Praktische Werte:**
+            - Nach **{n_50:.1f} Schwingungen** ist die Amplitude auf 50% abgefallen
+            - Nach **{n_10:.1f} Schwingungen** ist die Amplitude auf 10% abgefallen
+            """)
+            
         else:
-            st.warning("Bitte stellen Sie sicher, dass A_n > A_(n+1)")
+            st.warning("Bitte stellen Sie sicher, dass Aₙ > Aₙ₊₁")
 
 # Zusätzliche Informationen in der Sidebar
-st.sidebar.markdown("---")
-st.sidebar.header("Typische Werte")
+st.sidebar.header("ℹ️ Typische Werte")
 st.sidebar.markdown("""
 **Klaviersaite (Mittellage, A4):**
 - δ ≈ 0.5 - 2.0 s⁻¹
 - τ ≈ 0.5 - 2.0 s
+- Nachhall: 3-8 Sekunden
 
 **Stimmgabel:**
 - δ ≈ 0.05 - 0.2 s⁻¹
 - τ ≈ 5 - 20 s
+- Sehr lange Nachhalldauer
 
 **Glocke:**
 - δ ≈ 0.01 - 0.05 s⁻¹
 - τ ≈ 20 - 100 s
+- Extrem lange Nachhalldauer
+
+**Basssaite (E1):**
+- δ ≈ 0.3 - 1.0 s⁻¹
+- τ ≈ 1 - 3 s
+- Längerer Nachhall als hohe Töne
 """)
+
+st.sidebar.markdown("---")
+st.sidebar.header("📚 Wichtige Formeln")
+st.sidebar.latex(r'y(t) = A_0 \cdot e^{-\delta t} \cdot \sin(\omega t)')
+st.sidebar.latex(r'\tau = \frac{1}{\delta}')
+st.sidebar.latex(r'T_{1/2} = \frac{0.693}{\delta}')
+st.sidebar.latex(r'\Lambda = \delta \cdot T_d')
 
 st.sidebar.markdown("---")
 # st.sidebar.info("""
 # **Hinweis:** Diese App dient der Visualisierung gedämpfter Schwingungen 
 # für den Unterricht in Akustik und ist speziell für angehende Klavierbaumeister konzipiert.
+
+# Basierend auf dem Arbeitsblatt "Gedämpfte Schwingungen" (TRI 1.3).
 # """)
