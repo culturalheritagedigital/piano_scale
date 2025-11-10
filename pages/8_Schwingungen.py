@@ -116,9 +116,9 @@ with tab1:
                 'Gedämpfte Schwingung': y
             }, index=t)
         
-        st.line_chart(df, height=500, x_label="Zeit [s]", y_label="Auslenkung [cm]")
+        st.line_chart(df)
         
-        st.caption("**Legende:** Blaue Linie = Gedämpfte Schwingung; Rote Linien = Einhüllende $A(t) = A_0 \cdot e^{-\delta t}$")
+        st.caption("**Achsen:** X-Achse = Zeit [s], Y-Achse = Auslenkung [cm] | **Legende:** Blaue Linie = Gedämpfte Schwingung; Rote Linien = Einhüllende $A(t) = A_0 \cdot e^{-\delta t}$")
         
         # Zusätzliche Berechnungen
         st.subheader("Berechnete Werte")
@@ -209,8 +209,8 @@ with tab2:
             'Amplitude': signal_display
         }, index=time_display)
         
-        st.line_chart(df_audio, height=400, x_label="Zeit [s]", y_label="Amplitude")
-        st.caption(f"Zeitverlauf des Tons {selected_note} (erste {display_duration} s)")
+        st.line_chart(df_audio)
+        st.caption(f"Zeitverlauf des Tons {selected_note} (erste {display_duration} s) | X-Achse = Zeit [s], Y-Achse = Amplitude")
         
         st.info(f"""
         **Physikalische Parameter:**
@@ -269,9 +269,9 @@ with tab3:
         f'Starke Dämpfung (δ₃={delta3:.2f} s⁻¹)': y3
     }, index=t_comp)
     
-    st.line_chart(df_comp, height=500, x_label="Zeit [s]", y_label="Auslenkung [cm]")
+    st.line_chart(df_comp)
     
-    st.caption("**Beobachtung:** Je größer die Dämpfungskonstante δ, desto schneller klingt die Schwingung ab.")
+    st.caption("**Beobachtung:** Je größer die Dämpfungskonstante δ, desto schneller klingt die Schwingung ab. | X-Achse = Zeit [s], Y-Achse = Auslenkung [cm]")
     
     # Vergleichstabelle
     st.subheader("Charakteristische Zeiten im Vergleich")
@@ -355,15 +355,15 @@ with tab4:
             
             # Visualisierung der berechneten Schwingung
             st.write("**Visualisierung der berechneten Schwingung:**")
-            t_vis = np.linspace(0, max(10, t1*2), 500)
+            t_vis = np.linspace(t0, max(10, t1*2), 500)
             y_vis = A_t0 * np.exp(-delta_calculated * (t_vis - t0))
             
             df_vis = pd.DataFrame({
                 'Amplitude [cm]': y_vis
             }, index=t_vis)
             
-            st.line_chart(df_vis, height=300, x_label="Zeit [s]", y_label="Amplitude [cm]")
-            st.caption(f"Exponentielles Abklingen mit δ = {delta_calculated:.4f} s⁻¹")
+            st.line_chart(df_vis)
+            st.caption(f"Exponentielles Abklingen mit δ = {delta_calculated:.4f} s⁻¹ | X-Achse = Zeit [s], Y-Achse = Amplitude [cm]")
             
         else:
             st.warning("Bitte stellen Sie sicher, dass t₁ > t₀ und A(t₀) > A(t₁)")
@@ -432,29 +432,29 @@ with tab4:
         else:
             st.warning("Bitte stellen Sie sicher, dass Aₙ > Aₙ₊₁")
 
-# Zusätzliche Informationen in der Sidebar
-st.sidebar.header("ℹ️ Typische Werte")
-st.sidebar.markdown("""
-**Klaviersaite (Mittellage, A4):**
-- δ ≈ 0.5 - 2.0 s⁻¹
-- τ ≈ 0.5 - 2.0 s
-- Nachhall: 3-8 Sekunden
+# # Zusätzliche Informationen in der Sidebar
+# st.sidebar.header("ℹ️ Typische Werte")
+# st.sidebar.markdown("""
+# **Klaviersaite (Mittellage, A4):**
+# - δ ≈ 0.5 - 2.0 s⁻¹
+# - τ ≈ 0.5 - 2.0 s
+# - Nachhall: 3-8 Sekunden
 
-**Stimmgabel:**
-- δ ≈ 0.05 - 0.2 s⁻¹
-- τ ≈ 5 - 20 s
-- Sehr lange Nachhalldauer
+# **Stimmgabel:**
+# - δ ≈ 0.05 - 0.2 s⁻¹
+# - τ ≈ 5 - 20 s
+# - Sehr lange Nachhalldauer
 
-**Glocke:**
-- δ ≈ 0.01 - 0.05 s⁻¹
-- τ ≈ 20 - 100 s
-- Extrem lange Nachhalldauer
+# **Glocke:**
+# - δ ≈ 0.01 - 0.05 s⁻¹
+# - τ ≈ 20 - 100 s
+# - Extrem lange Nachhalldauer
 
-**Basssaite (E1):**
-- δ ≈ 0.3 - 1.0 s⁻¹
-- τ ≈ 1 - 3 s
-- Längerer Nachhall als hohe Töne
-""")
+# **Basssaite (E1):**
+# - δ ≈ 0.3 - 1.0 s⁻¹
+# - τ ≈ 1 - 3 s
+# - Längerer Nachhall als hohe Töne
+# """)
 
 st.sidebar.markdown("---")
 st.sidebar.header("📚 Wichtige Formeln")
