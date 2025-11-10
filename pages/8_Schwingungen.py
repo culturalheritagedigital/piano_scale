@@ -457,14 +457,14 @@ with tab4:
 # - Längerer Nachhall als hohe Töne
 # """)
 
-st.sidebar.markdown("---")
-st.sidebar.header("📚 Wichtige Formeln")
-st.sidebar.latex(r'y(t) = A_0 \cdot e^{-\delta t} \cdot \sin(\omega t)')
-st.sidebar.latex(r'\tau = \frac{1}{\delta}')
-st.sidebar.latex(r'T_{1/2} = \frac{0.693}{\delta}')
-st.sidebar.latex(r'\Lambda = \delta \cdot T_d')
-
 # st.sidebar.markdown("---")
+# st.sidebar.header("📚 Wichtige Formeln")
+# st.sidebar.latex(r'y(t) = A_0 \cdot e^{-\delta t} \cdot \sin(\omega t)')
+# st.sidebar.latex(r'\tau = \frac{1}{\delta}')
+# st.sidebar.latex(r'T_{1/2} = \frac{0.693}{\delta}')
+# st.sidebar.latex(r'\Lambda = \delta \cdot T_d')
+
+# # st.sidebar.markdown("---")
 # st.sidebar.info("""
 # **Hinweis:** Diese App dient der Visualisierung gedämpfter Schwingungen 
 # für den Unterricht in Akustik und ist speziell für angehende Klavierbaumeister konzipiert.
