@@ -47,8 +47,8 @@ def generate_damped_tone(frequency, A0, delta, duration=3.0, n_harmonics=10):
 st.title('Gedämpfte Schwingungen')
 
 st.markdown("""
-Diese App visualisiert gedämpfte harmonische Schwingungen, wie sie bei Klaviersaiten, 
-Stimmgabeln und anderen schwingenden Systemen auftreten.
+# Diese App visualisiert gedämpfte harmonische Schwingungen, wie sie bei Klaviersaiten, 
+# Stimmgabeln und anderen schwingenden Systemen auftreten.
 
 **Mathematische Beschreibung:** 
 $$y(t) = A_0 \cdot \sin(\omega_d t + \\varphi_0) \cdot e^{-\delta t}$$
@@ -69,7 +69,7 @@ tab1, tab2, tab3, tab4 = st.tabs([
 ])
 
 with tab1:
-    st.header("Interaktive Visualisierung einer gedämpften Schwingung")
+    st.header("Visualisierung einer gedämpften Schwingung")
     
     col1, col2 = st.columns([2, 1])
     
