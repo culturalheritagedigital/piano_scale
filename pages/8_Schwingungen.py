@@ -51,13 +51,13 @@ Diese App visualisiert gedämpfte harmonische Schwingungen, wie sie bei Klaviers
 Stimmgabeln und anderen schwingenden Systemen auftreten.
 
 **Mathematische Beschreibung:** 
-$$y(t) = A_0 \cdot \sin(\omega_d t + \varphi_0) \cdot e^{-\delta t}$$
+$$y(t) = A_0 \cdot \sin(\omega_d t + \\varphi_0) \cdot e^{-\delta t}$$
 
 wobei:
 - $A_0$ = Anfangsamplitude
 - $\delta$ = Dämpfungskonstante
 - $\omega_d$ = Kreisfrequenz
-- $\varphi_0$ = Nullphasenwinkel
+- $\\varphi_0$ = Nullphasenwinkel
 """)
 
 # Tabs für verschiedene Ansichten
@@ -84,7 +84,7 @@ with tab1:
         frequency = st.slider("Frequenz $f$ [Hz]:", 
                             min_value=0.5, max_value=5.0, value=1.0, step=0.1)
         
-        phi0 = st.slider("Nullphasenwinkel $\varphi_0$ [rad]:", 
+        phi0 = st.slider("Nullphasenwinkel $\\varphi_0$ [rad]:", 
                         min_value=0.0, max_value=2*np.pi, value=0.0, step=0.1)
         
         duration = st.slider("Darstellungsdauer [s]:", 
@@ -432,7 +432,7 @@ with tab4:
         else:
             st.warning("Bitte stellen Sie sicher, dass Aₙ > Aₙ₊₁")
 
-# # Zusätzliche Informationen in der Sidebar
+# Zusätzliche Informationen in der Sidebar
 # st.sidebar.header("ℹ️ Typische Werte")
 # st.sidebar.markdown("""
 # **Klaviersaite (Mittellage, A4):**
@@ -463,7 +463,7 @@ st.sidebar.latex(r'\tau = \frac{1}{\delta}')
 st.sidebar.latex(r'T_{1/2} = \frac{0.693}{\delta}')
 st.sidebar.latex(r'\Lambda = \delta \cdot T_d')
 
-st.sidebar.markdown("---")
+# st.sidebar.markdown("---")
 # st.sidebar.info("""
 # **Hinweis:** Diese App dient der Visualisierung gedämpfter Schwingungen 
 # für den Unterricht in Akustik und ist speziell für angehende Klavierbaumeister konzipiert.
