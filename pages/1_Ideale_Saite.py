@@ -100,7 +100,7 @@ def generate_wav_file(frequencies, amplitudes_db, damping_factors):
 
 
 # st.title('Ideal Stretched String')
-st.title('Ideale gedehnte Saite')
+st.title('Ideale Saite')
 
 # with st.expander("Click to read more:"):
 with st.expander("Zum Lesen aufklappen:"):
@@ -190,7 +190,7 @@ d = st.selectbox(
     string_diameters, index=11)
 
 # st.header("Tensile Strengths and Load Capacities")
-st.header("Zugfestigkeiten und Tragfähigkeiten")
+st.header("Zugfestigkeit und Auslastung")
 #
 def taylor_string_load(f, l, d, rho):
     return (np.pi * rho * (f * l * d)**2)
@@ -201,7 +201,7 @@ max_load = string_load_capacities[string_diameters.index(d)]
 percentage_of_max_load = np.round(actual_load/max_load*100,2)
 
 # st.write("The actual load is ", actual_load, "N, which is ", percentage_of_max_load, "% of the maximum load capacity (", max_load, " N, including a safety factor of 0.8).")
-st.write("Der tatsächliche Saitenzug beträgt ", actual_load, "N, das entspricht ", percentage_of_max_load, "% der maximalen Tragfähigkeit (", max_load, " N, mit Sicherheitsfaktor 0,8).")
+st.write("Der tatsächliche Saitenzug beträgt ", actual_load, "N, das entspricht ", percentage_of_max_load, "% der maximalen Auslastung (", max_load, " N, mit Sicherheitsfaktor 0,8).")
 
 
 # df = pd.DataFrame({"Diameter (mm)": string_diameters, "Tensile strength (N/mm^2)": tensile_strengths, "Max load capacity (*0.75) (N)": string_load_capacities})
