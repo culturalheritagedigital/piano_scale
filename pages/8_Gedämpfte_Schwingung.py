@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 
 st.set_page_config(
-    page_title="Gedämpfte Schwingungen",
+    page_title="Gedämpfte Schwingung",
     page_icon="〰️",
     layout="wide"
 )
@@ -44,7 +44,7 @@ def generate_damped_tone(frequency, A0, delta, duration=3.0, n_harmonics=10):
     
     return signal, time
 
-st.title('Gedämpfte Schwingungen')
+st.title('Gedämpfte Schwingung')
 
 st.markdown("""
 Eine gedämpfte Schwingung tritt auf, wenn ein schwingendes System Energie an seine Umgebung abgibt, 
