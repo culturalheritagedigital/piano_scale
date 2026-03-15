@@ -8,7 +8,7 @@ st.set_page_config(
     layout="wide"
 )
 
-def generate_damped_tone(frequency, A0, delta, duration=3.0, n_harmonics=10):
+def generate_damped_tone(frequency, delta, duration=3.0, n_harmonics=10):
     """Generiert einen gedämpften Ton mit Obertönen"""
     sample_rate = 48000
     num_samples = int(duration * sample_rate)
@@ -136,7 +136,7 @@ with tab1:
                      f"{tau:.2f} s" if tau != np.inf else "∞")
         
         with col_c:
-            T_half = 0.693/delta if delta > 0 else np.inf
+            T_half = np.log(2)/delta if delta > 0 else np.inf
             st.metric("Halbwertszeit $T_{1/2}$", 
                      f"{T_half:.2f} s" if T_half != np.inf else "∞")
         
@@ -184,7 +184,7 @@ with tab2:
         
         # Generiere Ton
         signal_combined, time_audio = generate_damped_tone(
-            tone_frequency, 1.0, tone_delta, tone_duration, n_harmonics
+            tone_frequency, tone_delta, tone_duration, n_harmonics
         )
         
         st.audio(signal_combined, format="audio/wav", sample_rate=48000)
@@ -218,7 +218,7 @@ with tab2:
         - Grundfrequenz: **{tone_frequency:.2f} Hz**
         - Dämpfungskonstante: **{tone_delta:.2f} s⁻¹**
         - Abklingzeit τ: **{1/tone_delta:.2f} s**
-        - Halbwertszeit T₁/₂: **{0.693/tone_delta:.2f} s**
+        - Halbwertszeit T₁/₂: **{np.log(2)/tone_delta:.2f} s**
         
         **Obertöne:** Die Obertöne dämpfen schneller ab (δₖ = k·δ),
         was dem natürlichen Verhalten von Saiten entspricht.
@@ -286,21 +286,21 @@ with tab3:
         'Schwache Dämpfung': [
             f'{delta1:.3f}',
             f'{1/delta1:.2f}',
-            f'{0.693/delta1:.2f}',
+            f'{np.log(2)/delta1:.2f}',
             f'{np.log(10)/delta1:.2f}',
             f'{np.log(100)/delta1:.2f}'
         ],
         'Mittlere Dämpfung': [
             f'{delta2:.3f}',
             f'{1/delta2:.2f}',
-            f'{0.693/delta2:.2f}',
+            f'{np.log(2)/delta2:.2f}',
             f'{np.log(10)/delta2:.2f}',
             f'{np.log(100)/delta2:.2f}'
         ],
         'Starke Dämpfung': [
             f'{delta3:.3f}',
             f'{1/delta3:.2f}',
-            f'{0.693/delta3:.2f}',
+            f'{np.log(2)/delta3:.2f}',
             f'{np.log(10)/delta3:.2f}',
             f'{np.log(100)/delta3:.2f}'
         ]
@@ -349,10 +349,10 @@ with tab4:
             
             # Weitere Größen
             tau_calc = 1/delta_calculated
-            T_half_calc = 0.693/delta_calculated
+            T_half_calc = np.log(2)/delta_calculated
             
             st.write(f"**Abklingzeit:** τ = 1/δ = {tau_calc:.3f} s")
-            st.write(f"**Halbwertszeit:** T₁/₂ = 0.693/δ = {T_half_calc:.3f} s")
+            st.write(f"**Halbwertszeit:** T₁/₂ = np.log(2)/δ = {T_half_calc:.3f} s")
             
             # Visualisierung der berechneten Schwingung
             st.write("**Visualisierung der berechneten Schwingung:**")
@@ -407,7 +407,7 @@ with tab4:
             
             # Weitere Berechnungen
             tau_lambda = 1/delta_from_Lambda
-            T_half_lambda = 0.693/delta_from_Lambda
+            T_half_lambda = np.log(2)/delta_from_Lambda
             
             st.write(f"**Abklingzeit:** τ = {tau_lambda:.3f} s")
             st.write(f"**Halbwertszeit:** T₁/₂ = {T_half_lambda:.3f} s")
@@ -432,42 +432,3 @@ with tab4:
             
         else:
             st.warning("Bitte stellen Sie sicher, dass Aₙ > Aₙ₊₁")
-
-# Zusätzliche Informationen in der Sidebar
-# st.sidebar.header("ℹ️ Typische Werte")
-# st.sidebar.markdown("""
-# **Klaviersaite (Mittellage, A4):**
-# - δ ≈ 0.5 - 2.0 s⁻¹
-# - τ ≈ 0.5 - 2.0 s
-# - Nachhall: 3-8 Sekunden
-
-# **Stimmgabel:**
-# - δ ≈ 0.05 - 0.2 s⁻¹
-# - τ ≈ 5 - 20 s
-# - Sehr lange Nachhalldauer
-
-# **Glocke:**
-# - δ ≈ 0.01 - 0.05 s⁻¹
-# - τ ≈ 20 - 100 s
-# - Extrem lange Nachhalldauer
-
-# **Basssaite (E1):**
-# - δ ≈ 0.3 - 1.0 s⁻¹
-# - τ ≈ 1 - 3 s
-# - Längerer Nachhall als hohe Töne
-# """)
-
-# st.sidebar.markdown("---")
-# st.sidebar.header("📚 Wichtige Formeln")
-# st.sidebar.latex(r'y(t) = A_0 \cdot e^{-\delta t} \cdot \sin(\omega t)')
-# st.sidebar.latex(r'\tau = \frac{1}{\delta}')
-# st.sidebar.latex(r'T_{1/2} = \frac{0.693}{\delta}')
-# st.sidebar.latex(r'\Lambda = \delta \cdot T_d')
-
-# # st.sidebar.markdown("---")
-# st.sidebar.info("""
-# **Hinweis:** Diese App dient der Visualisierung gedämpfter Schwingungen 
-# für den Unterricht in Akustik und ist speziell für angehende Klavierbaumeister konzipiert.
-
-# Basierend auf dem Arbeitsblatt "Gedämpfte Schwingungen" (TRI 1.3).
-# """)
