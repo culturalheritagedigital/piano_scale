@@ -224,7 +224,7 @@ actual_string_stretching = np.round(string_stretching(actual_load, l, d, E),4)
 
 actual_string_stretching_percent = np.round(actual_string_stretching/l*100,2)
 
-st.write("Hier können alle Parameter runtergeladen werden (rechts oben \"Download as CSV\"):")
+st.write("Hier können alle Parameter als Datei exportiert werden (rechts oben \"Download as CSV\"):")
 # df = pd.DataFrame({"Key": key ,"f_1 [Hz]": [f(key_num)], "Length [mm]": l, "Diameter [mm]": d, "delta [cent]": actual_delta_inharmonicity, "B": actual_B_inharmonicity, "Load [N]": actual_load, "Max Load Capacity [N]": max_load, "Percentage of Max Load Capacity [%]": percentage_of_max_load, "String Stretching [mm]": actual_string_stretching, "String Stretching [%]": actual_string_stretching_percent})
 df = pd.DataFrame({"Taste": key, "f_1 [Hz]": [f(key_num)], "Länge [mm]": l, "Durchmesser [mm]": d, "delta [Cent]": actual_delta_inharmonicity, "B": actual_B_inharmonicity, "Saitenzug [N]": actual_load, "Max. Auslastung [N]": max_load, "Auslastung [%]": percentage_of_max_load, "Dehnung [mm]": actual_string_stretching, "Dehnung [%]": actual_string_stretching_percent})
 
