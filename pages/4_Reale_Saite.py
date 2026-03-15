@@ -2,8 +2,6 @@ import streamlit as st
 import numpy as np
 import pandas as pd
 
-from scipy.io import wavfile
-
 note_names = ('A0', 'A♯0', 'B0', 'C1', 'C♯1', 'D1', 'D♯1', 'E1', 'F1', 'F♯1',
        'G1', 'G♯1', 'A1', 'A♯1', 'B1', 'C2', 'C♯2', 'D2', 'D♯2', 'E2',
        'F2', 'F♯2', 'G2', 'G♯2', 'A2', 'A♯2', 'B2', 'C3', 'C♯3', 'D3',
@@ -190,10 +188,7 @@ list_of_inharmonic_partial_frequencies = [calculate_inharmonic_partials(f(key_nu
 damping_factor = st.slider("Dämpfungsfaktor wählen:", min_value=0.0, max_value=3.0, value=.3, step=.1)
 
 
-#st.write("I'm ", age, "years old")
-
-#frequencies1 = [f(key_num) * k for k in np.arange(1,n+1,1)]  # Frequenzen in Hz / Frequencies in Hz
-amplitudes = [0-k for k in np.arange(1,n+1,1)]  # Amplituden in dB / Amplitudes in dB
+amplitudes = [-k for k in np.arange(1,n+1,1)]  # Amplituden in dB / Amplitudes in dB
 damping_factors = damping_factor*np.arange(n+1)  # Dämpfungsfaktoren in dB/s / Damping factors in dB/sec
 signal = generate_wav_file(list_of_inharmonic_partial_frequencies, amplitudes, damping_factors)
 
@@ -201,7 +196,7 @@ st.audio(signal, format="audio/mpeg", sample_rate=48000)
 
 four = np.abs(np.fft.fft(signal[0:48000]))
 four = four/np.max(four)
-fourlog = 20*np.log10(four/np.max(four))
+fourlog = 20*np.log10(four)
 
 if f(key_num)*(n+2) >20000:
     st.line_chart(fourlog[0:20000])
@@ -209,8 +204,8 @@ else:
     st.line_chart(fourlog[0:int(f(key_num)*(n+2))])
 
 
-def taylor_string_load(f, l, d, rho):
-    return (np.pi * rho * (f * l * d)**2)
+def taylor_string_load(freq, l, d, rho):
+    return (np.pi * rho * (freq * l * d)**2)
 
 actual_load = np.round(taylor_string_load(f(key_num), l/1000, d/1000, rho),2)
 max_load = string_load_capacities[string_diameters.index(d)]
@@ -231,32 +226,3 @@ df = pd.DataFrame({"Taste": key, "f_1 [Hz]": [f(key_num)], "Länge [mm]": l, "Du
 
 st.dataframe(df)
 
-# st.header("Taylor String Parameters")
-
-# st.latex(r''' f_n = \frac{1}{l \cdot d} \cdot \sqrt{\frac{F}{\pi \cdot \rho}}  ''')
-
-# st.write("with l = string length [m], d = string diameter [m], F = string load [N], ρ = density of steel [kg/m^3], n = harmonic number")
-
-
-# l = st.number_input("Insert string length [mm]:", value=402.00, min_value=40.00, max_value=2500.00, step=0.01)
-
-# d = st.selectbox(
-#     "Select a string diameter [mm]:",
-#     string_diameters, index=11)
-
-# st.header("Tensile Strengths and Load Capacities")
-
-
-
-# st.write("The actual load is ", actual_load, "N, which is ", percentage_of_max_load, "% of the maximum load capacity (", max_load, " N, including a safety factor of 0.75).")
-
-
-# # df = pd.DataFrame({"Diameter (mm)": string_diameters, "Tensile strength (N/mm^2)": tensile_strengths, "Max load capacity (*0.75) (N)": string_load_capacities})
-
-# # st.dataframe(df)
-
-# st.header("String Stretching")
-
-
-
-# st.write("The actual string stretching is ", actual_string_stretching, "mm or ", actual_string_stretching_percent,  "%.")
