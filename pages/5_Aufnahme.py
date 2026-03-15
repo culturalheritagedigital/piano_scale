@@ -1,16 +1,11 @@
 import numpy as np
 import streamlit as st
 from streamlit_mic_recorder import mic_recorder
-#from io import BytesIO
 import librosa
 from math import log,ceil,pi,sin,cos
 import operator
-import pandas as pd
-
-import numpy as np
-import streamlit as st
-from math import log,ceil,pi,sin,cos
-import operator
+import io
+from scipy.io import wavfile
 
 st.set_page_config(
     page_title="Sonare",
@@ -71,7 +66,6 @@ rho = 7850  # Density of steel in kg/m^3
 E = 215000  # N/mm^2
 
 def taylor_force(f, l, d, rho):
-    return np.round((f**2 * l**2 * d**2 * np.pi * rho )/ 10**12 ,2)    
     """
     Calculates the force of a string using the Taylor formula.
     Parameters:
@@ -82,9 +76,9 @@ def taylor_force(f, l, d, rho):
     Returns:
     :return F: force in N
     """
+    return np.round((f**2 * l**2 * d**2 * np.pi * rho )/ 10**12 ,2)
 
 def B_to_delta(B,n):
-    return 1200 * np.log2(np.sqrt(1+B * n**2))
     """
     Converts the inharmonicity coefficient B to the detuning factor delta.
     Parameters:
@@ -93,9 +87,9 @@ def B_to_delta(B,n):
     Returns:
     :return delta: detuning factor in cents
     """
+    return 1200 * np.log2(np.sqrt(1+B * n**2))
 
 def delta_to_B(delta,n):
-    return (2**((2*delta/1200))-1) / n**2
     """
     Converts the detuning factor delta to the inharmonicity coefficient B.
     Parameters:
@@ -104,6 +98,7 @@ def delta_to_B(delta,n):
     Returns:
     :return B: inharmonicity coefficient
     """
+    return (2**((2*delta/1200))-1) / n**2
 
 
 
@@ -137,20 +132,19 @@ def audio_bytes_to_numpy(audio_dict):
         return None, None
     
     audio_bytes = audio_dict['bytes']
-    sample_rate = audio_dict.get('sample_rate', None)
-    
+
     if not audio_bytes:
         st.warning("Warnung: audio_bytes ist leer.")
         return None, None
     
     try:
-        # Lade WAV-Daten direkt in NumPy-Array
-        audio_array = np.frombuffer(audio_bytes, dtype=np.int16)
-        
+        # Lade WAV-Daten korrekt (inkl. Header-Parsing)
+        sr, audio_array = wavfile.read(io.BytesIO(audio_bytes))
+
         # Normalisiere auf Bereich [-1, 1]
-        audio_array_float = audio_array.astype(np.float32) / 32768.0
-        
-        return audio_array_float, sample_rate
+        audio_array_float = audio_array.astype(np.float32) / np.iinfo(audio_array.dtype).max
+
+        return audio_array_float, sr
     except Exception as e:
         st.error(f"Fehler bei der Verarbeitung der Audio-Daten: {e}")
         return None, None
@@ -251,7 +245,7 @@ def inharmonicity(X, gt, dgt, beta, _lambda, _iter, B, f0, N, NL):
             nNL = nNL+1
 
         u = range(1,31)
-        for i in range(len(u)):
+        for _ in u:
             ftemp = np.zeros(len(nNL))
             for i in range(len(nNL)):
                 ftemp[i] = f[nNL[i]-1]
@@ -368,7 +362,7 @@ def estimate_inharmonicity(wav_file_path, midiNum ,sr=48000):
     return f0_final, B1[r], a, f, V, x    
 
 kammerton = 443
-def f(key):
+def equal_temperament_freq(key):
     return np.round(kammerton * 2**((key-49)/12),4)
 
 #############################################################################################################################
@@ -392,7 +386,7 @@ key = st.selectbox(
 
 key_num = note_names.index(key)+1
 
-st.write("Die aktuelle Taste ist ", key, " mit einer Grundfrequenz von ", f(key_num), "Hz in gleichstufig temperierter Stimmung.")
+st.write("Die aktuelle Taste ist ", key, " mit einer Grundfrequenz von ", equal_temperament_freq(key_num), "Hz in gleichstufig temperierter Stimmung.")
 
 st.write("2. Drücken Sie auf 'Start recording' und spielen Sie die Taste.")
 with st.expander("Aufnahmehinweise:"):
@@ -429,13 +423,13 @@ if audio:
 
         if data_ok:
             # search the max position in numpy_array
-            max_pos = np.argmax(numpy_array[100:])
+            max_pos = np.argmax(numpy_array[100:]) + 100
             # cut the numpy_array at the max position
             numpy_array = numpy_array[max_pos:max_pos+sample_rate]
             #st.line_chart(numpy_array)
             four = np.abs(np.fft.fft(numpy_array))
             four = four/np.max(four)
-            fourlog = 20*np.log10(four/np.max(four))
+            fourlog = 20*np.log10(four)
             st.line_chart(fourlog[:12000])
 
             f0, B, a, f, V, x = estimate_inharmonicity(numpy_array, key_num + 20, sr=sample_rate)
