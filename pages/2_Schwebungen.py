@@ -116,13 +116,6 @@
 import streamlit as st
 import numpy as np
 import pandas as pd
-from scipy.io import wavfile
-
-note_names = ('A4', 'A♯4',
-       'B4', 'C5', 'C♯5', 'D5', 'D♯5', 'E5', 'F5', 'F♯5', 'G5', 'G♯5',
-       'A5')
-
-intervall_name = ('Prime', 'kleine Sekunde', 'große Sekunde', 'kleine Terz', 'große Terz', 'reine Quarte', 'Tritonus / verminderte Quinte', 'reine Quinte', 'kleine Sexte', 'große Sexte', 'kleine Septime', 'große Septime', 'Oktave')
 
 st.set_page_config(
     page_title="Sonare",
@@ -130,7 +123,7 @@ st.set_page_config(
 )
 
 def generate_wav_file(frequencies1, frequencies2, amplitudes_db, damping_factors):
-    duration = 5
+    duration = 3
     hamm = np.hamming(48000)[24000:48000]
     ones = np.ones(int(48000*2.5))
     fadeout = np.append(ones, hamm)
@@ -219,7 +212,7 @@ damping_factor = 0
 frequencies1 = [f1 * k for k in np.arange(1,n+1,1)]
 frequencies2 = [f2 * k for k in np.arange(1,n+1,1)]
 
-amplitudes = [0-k for k in np.arange(1,n+1,1)]
+amplitudes = [-k for k in np.arange(1,n+1,1)]
 damping_factors = damping_factor*np.arange(n+1)
 
 signal, signal1, signal2 = generate_wav_file(frequencies1, frequencies2, amplitudes, damping_factors)
@@ -229,11 +222,11 @@ st.audio(signal, format="audio/mpeg", sample_rate=48000)
 # Calculate FFT for both signals
 four1 = np.abs(np.fft.fft(signal1[0:48000]))
 four1 = four1/np.max(four1)
-fourlog1 = 20*np.log10(four1/np.max(four1))
+fourlog1 = 20*np.log10(four1)
 
 four2 = np.abs(np.fft.fft(signal2[0:48000]))
 four2 = four2/np.max(four2)
-fourlog2 = 20*np.log10(four2/np.max(four2))
+fourlog2 = 20*np.log10(four2)
 
 # Create DataFrame for plotting
 # max_freq = max(f1, f2)
