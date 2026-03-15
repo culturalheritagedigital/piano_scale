@@ -1,9 +1,5 @@
 import streamlit as st
 import numpy as np
-import pandas as pd
-
-
-from scipy.io import wavfile
 
 note_names = ('A0', 'A♯0', 'B0', 'C1', 'C♯1', 'D1', 'D♯1', 'E1', 'F1', 'F♯1',
        'G1', 'G♯1', 'A1', 'A♯1', 'B1', 'C2', 'C♯2', 'D2', 'D♯2', 'E2',
@@ -154,7 +150,7 @@ damping_factor = st.slider("Dämpfungsfaktor wählen:", min_value=0.0, max_value
 #st.write("I'm ", age, "years old")
 
 frequencies1 = [f(key_num) * k for k in np.arange(1,n+1,1)]  # Frequenzen in Hz / Frequencies in Hz
-amplitudes = [0-k for k in np.arange(1,n+1,1)]  # Amplituden in dB / Amplitudes in dB
+amplitudes = [-k for k in np.arange(1,n+1,1)]  # Amplituden in dB / Amplitudes in dB
 damping_factors = damping_factor*np.arange(n+1)  # Dämpfungsfaktoren in dB/s / Damping factors in dB/sec
 signal = generate_wav_file(frequencies1, amplitudes, damping_factors)
 
@@ -162,7 +158,7 @@ st.audio(signal, format="audio/mpeg", sample_rate=48000)
 
 four = np.abs(np.fft.fft(signal[0:48000]))
 four = four/np.max(four)
-fourlog = 20*np.log10(four/np.max(four))
+fourlog = 20*np.log10(four)
 
 if f(key_num)*(n+2) >20000:
     st.line_chart(fourlog[0:20000], x_label="Frequenz [Hz]", y_label="Amplitude [dB]")
