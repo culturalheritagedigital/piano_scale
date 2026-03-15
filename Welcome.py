@@ -76,6 +76,6 @@ st.title('🎹 Sonare')
 # </div>"""
 # st.markdown(footer_html, unsafe_allow_html=True)
 
-st.sidebar.markdown("Sonare © 2025 by Niko Plath is licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International")
+st.sidebar.markdown("Sonare © 2026 by Niko Plath is licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International")
 
 st.sidebar.markdown("Contact: [www.culturalheritage.digital](http://www.culturalheritage.digital/)")
